@@ -260,3 +260,38 @@ http://localhost:3000
 O backend do **Sistema de Agendamento de Consultas** fornece a base lógica e estrutural para o gerenciamento de usuários, médicos, pacientes e consultas, com autenticação via JWT e integração direta com o banco **Neon PostgreSQL.**
 
 O projeto reforça os conceitos de **arquitetura em camadas, segurança de dados e desenvolvimento orientado a serviços (REST)**, fundamentais para aplicações reais na área da saúde e gestão de sistemas.
+
+--- 
+
+# Documentação com Swagger
+
+A API foi documentada utilizando o **Swagger UI**, permitindo visualizar e testar todas as rotas disponíveis no sistema de consultas médicas.
+
+###  Como acessar
+Após rodar o servidor localmente, pode ser acessado pelo link: http://localhost:3000/api-docs 
+
+
+Caso rode em procução (Vercel):  https://sistema-consultas-backend.vercel.app/api-docs 
+
+
+###  Exemplos de Visualização
+1. **Tela inicial do Swagger** com todas as rotas listadas:
+
+![Swagger](/backend/img/Swagger1.png) 
+
+![Swagger](/backend/img/Swagger2.png) 
+
+
+1. **Exemplo de requisição POST (criar consulta)**:
+
+![Swagger](/backend/img/Consultas_Swagger.png) 
+
+
+2. **Exemplo de requisição GET (listar consultas)**:
+
+![Swagger](/backend/img/Listar_Consulta_Swagger.png) 
+
+
+Essas imagens demonstram o funcionamento e a integração bem-sucedida entre backend, banco de dados e documentação.
+
+
