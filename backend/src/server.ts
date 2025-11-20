@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
 import { connectDatabase } from "./database/connection.js";
 import userRoutes from "./routes/userRoutes.js";
 import consultaRoutes from "./routes/consultaRoutes.js";
@@ -29,7 +30,12 @@ app.use("/api/medicos", medicoRoutes);
 // Rotas de pacientes
 app.use("/api/pacientes", pacienteRoutes);
 
-
+// -----------------------------
+// Rota base — para teste local e vercel
+// -----------------------------
+app.get("/", (req, res) => {
+  res.send("✅ API está rodando com sucesso!");
+});
 
 // Porta de execução
 const PORT = process.env.PORT || 3000;
