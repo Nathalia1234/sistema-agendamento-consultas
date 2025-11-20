@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# sistema-agendamento-consultas
-Aplicação web FullStack para agendamento de consultas médicas, desenvolvida com backend em PostgreSQL (Neon) e frontend em React/Vite. Inclui funcionalidades de cadastro, visualização de horários, agendamento e cancelamento de consultas, com autenticação JWT e interface responsiva. 
-=======
 #  Sistema de Agendamento de Consultas — Backend
 
 ##  Introdução
@@ -264,4 +260,3 @@ http://localhost:3000
 O backend do **Sistema de Agendamento de Consultas** fornece a base lógica e estrutural para o gerenciamento de usuários, médicos, pacientes e consultas, com autenticação via JWT e integração direta com o banco **Neon PostgreSQL.**
 
 O projeto reforça os conceitos de **arquitetura em camadas, segurança de dados e desenvolvimento orientado a serviços (REST)**, fundamentais para aplicações reais na área da saúde e gestão de sistemas.
->>>>>>> c86726e (-)
