@@ -253,14 +253,6 @@ O servidor será iniciado em:
 http://localhost:3000
 ```
 
----
-
-# Conclusão
-
-O backend do **Sistema de Agendamento de Consultas** fornece a base lógica e estrutural para o gerenciamento de usuários, médicos, pacientes e consultas, com autenticação via JWT e integração direta com o banco **Neon PostgreSQL.**
-
-O projeto reforça os conceitos de **arquitetura em camadas, segurança de dados e desenvolvimento orientado a serviços (REST)**, fundamentais para aplicações reais na área da saúde e gestão de sistemas.
-
 --- 
 
 # Documentação com Swagger
@@ -294,4 +286,34 @@ Caso rode em procução (Vercel):  https://sistema-consultas-backend.vercel.app/
 
 Essas imagens demonstram o funcionamento e a integração bem-sucedida entre backend, banco de dados e documentação.
 
+---
 
+# Deploy na Vercel
+
+O backend do projeto Sistema de Agendamento de Consultas foi implantado com sucesso na plataforma Vercel, garantindo acesso público e integração direta com o banco de dados Neon PostgreSQL.
+
+🔗 URL pública da API: https://sistema-agendamento-consultas-phi.vercel.app/ 
+
+Configurações do Deploy:
+
+- **Framework**: Node.js (TypeScript)
+- **Root Directory**: ./
+- **Build Command**: npm run build
+- **Output Directory**: dist
+- **Environment Variables**:
+  - **DATABASE_URL** → URL de conexão do banco Neon
+  - **JWT_SECRET** → chave secreta para autenticação JWT
+
+### Teste de Funcionamento
+
+Durante os testes pós-deploy, foi possível confirmar o funcionamento correto das rotas. Abaixo, um exemplo de requisição GET à rota **/api/consultas**, retornando dados reais do banco Neon:
+
+![Swagger](/backend/img/Teste_Vercel.png) 
+
+--- 
+
+# Conclusão
+
+O backend do **Sistema de Agendamento de Consultas** fornece a base lógica e estrutural para o gerenciamento de usuários, médicos, pacientes e consultas, com autenticação via JWT e integração direta com o banco **Neon PostgreSQL.**
+
+O projeto reforça os conceitos de **arquitetura em camadas, segurança de dados e desenvolvimento orientado a serviços (REST)**, fundamentais para aplicações reais na área da saúde e gestão de sistemas.
