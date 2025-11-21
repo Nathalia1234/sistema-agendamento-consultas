@@ -41,12 +41,6 @@ app.use("/api/protected", protectedRoutes);
 // Swagger
 swaggerDocs(app);
 
-// -----------------------------
-// Rota base — para teste local e vercel
-// -----------------------------
-app.get("/", (req, res) => {
-  res.send("✅ API está rodando com sucesso!");
-});
 
 // Porta de execução
 const PORT = process.env.PORT || 3000;
