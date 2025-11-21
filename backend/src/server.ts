@@ -16,7 +16,11 @@ import { swaggerDocs } from "./swagger.config.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(cors({origin: ["https://vercel.com/nathe557-4498s-projects/sistema-agendamento-consultas"],methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+  
+
 app.use(express.json());
 
 // Conecta ao banco Neon
