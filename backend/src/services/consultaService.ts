@@ -1,6 +1,7 @@
 import { pool } from "../database/connection.js";
 
 export class ConsultaService {
+
   async criarConsulta(data: any) {
     const { paciente, medico, data_consulta, descricao } = data;
     const result = await pool.query(
@@ -32,4 +33,15 @@ export class ConsultaService {
   async deletarConsulta(id: number) {
     await pool.query("DELETE FROM consultas WHERE id = $1", [id]);
   }
+
+  async cancelConsulta(consultaId: number) {
+  const updateResult = await pool.query("UPDATE consultas SET status = 'CANCELADA' WHERE id = $1 RETURNING id",
+    [consultaId]
+  );
+  if (updateResult.rows.length === 0) {
+    throw new Error("Consulta não encontrada.");
+  }
+
+  return updateResult.rows[0];
+}
 }
