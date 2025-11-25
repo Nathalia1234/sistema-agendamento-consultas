@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { listarMedicos, buscarMedicoPorId, criarMedico, atualizarMedico, deletarMedico } from "../controllers/medicoController.js";
+import {
+  listarMedicos,
+  buscarMedicoPorId,
+  criarMedico,
+  atualizarMedico,
+  deletarMedico,
+  getAgendaMedico,
+} from "../controllers/medicoController.js";
 
 const router = Router();
 
@@ -17,6 +24,9 @@ router.put("/:id", atualizarMedico);
 
 // Deletar médico
 router.delete("/:id", deletarMedico);
+
+// Agenda do medico
+router.get("/:id/agenda", getAgendaMedico);
 
 export default router;
 
@@ -124,7 +134,7 @@ export default router;
  */
 
 /**
-* /medicos/{id}:
+ * /medicos/{id}:
  *   delete:
  *     summary: Excluir médico
  *     tags: [Médicos]
@@ -137,4 +147,51 @@ export default router;
  *     responses:
  *       200:
  *         description: Médico excluído com sucesso
+ */
+
+/**
+ * @swagger
+ * /medicos/{id}/agenda:
+ *   get:
+ *     summary: Visualizar agenda de atendimentos futuros do médico.
+ *     description: "Retorna a lista de todas as consultas agendadas para o profissional, a partir da data/hora atual."
+ *     tags:
+ *       - Médicos
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do médico logado.
+ *     responses:
+ *       '200':
+ *         description: Lista de consultas futuras, incluindo dados do paciente (nome e telefone).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 5
+ *                   data_consulta:
+ *                     type: string
+ *                     format: date-time
+ *                     example: '2025-12-30T10:00:00Z'
+ *                   descricao:
+ *                     type: string
+ *                     example: Consulta de acompanhamento.
+ *                   nome_paciente:
+ *                     type: string
+ *                     example: Ana Lúcia
+ *                   telefone_paciente:
+ *                     type: string
+ *                     example: '(71) 98765-4321'
+ *       '400':
+ *         description: ID do médico não fornecido ou inválido.
+ *       '500':
+ *         description: Erro interno do servidor.
  */
