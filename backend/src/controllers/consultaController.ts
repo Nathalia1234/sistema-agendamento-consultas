@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { pool } from "../database/connection.js";
+import { ConsultaService } from "../services/consultaService.js";
+
+const consultaService = new ConsultaService();
 
 // Criar nova consulta
 export const createConsulta = async (req: Request, res: Response) => {
@@ -77,3 +80,22 @@ export const deleteConsulta = async (req: Request, res: Response) => {
   }
 };
 
+export async function cancelConsulta(req: Request, res: Response) {
+  const consultaId = parseInt(req.params.id, 10);
+
+  try {
+    // Chamada direta ao Service
+    await consultaService.cancelConsulta(consultaId);
+
+    return res.status(200).json({
+      message: "✅ Consulta cancelada com sucesso. O horário foi liberado.",
+    });
+
+  } catch (error) {
+    if (error instanceof Error && error.message.includes("Consulta não encontrada")) {
+            return res.status(404).json({ message: error.message });
+        }
+    console.error("Erro ao cancelar consulta:", error);
+    return res.status(500).json({ message: "Erro interno ao processar o cancelamento." });
+  }
+}

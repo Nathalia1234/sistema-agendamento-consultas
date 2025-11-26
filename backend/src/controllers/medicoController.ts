@@ -59,3 +59,48 @@ export const deletarMedico = async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getAgendaMedico = async (req: Request, res: Response) => {
+    // É recomendado usar o ID do médico do token de autenticação (JWT)
+    // Mas, para fins de teste, vamos pegá-lo do parâmetro de rota.
+    const { id } = req.params; // Assume que o ID do médico virá na rota (ex: /medicos/2/agenda)
+
+    if (!id) {
+        return res.status(400).json({ error: "ID do médico é obrigatório." });
+    }
+
+    try {
+        const query = `
+            SELECT 
+                c.id, 
+                c.data_consulta, 
+                c.descricao, 
+                p.nome AS nome_paciente, 
+                p.telefone AS telefone_paciente
+            FROM 
+                consultas c
+            JOIN 
+                pacientes p ON c.paciente_id = p.id
+            WHERE 
+                c.medico_id = $1 
+                AND c.data_consulta >= NOW() -- Filtra apenas datas futuras
+            ORDER BY 
+                c.data_consulta ASC; -- Ordena do mais próximo para o mais distante
+        `;
+
+        const result = await pool.query(query, [id]);
+
+        if (result.rows.length === 0) {
+            return res.status(200).json({
+                message: "Nenhum atendimento futuro encontrado para este profissional.",
+                agenda: []
+            });
+        }
+
+        res.status(200).json(result.rows);
+
+    } catch (error: any) {
+        console.error("Erro ao buscar agenda do médico:", error);
+        res.status(500).json({ error: "Erro interno ao buscar a agenda." });
+    }
+};

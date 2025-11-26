@@ -5,7 +5,8 @@ import {
   listarPacientes,
   buscarPacientePorId,
   atualizarPaciente,
-  deletarPaciente
+  deletarPaciente,
+  getAgendaSemanal,
 } from "../controllers/pacienteController.js";
 
 const router = Router();
@@ -15,6 +16,7 @@ router.get("/", listarPacientes);
 router.get("/:id", buscarPacientePorId);
 router.put("/:id", atualizarPaciente);
 router.delete("/:id", deletarPaciente);
+router.get("/disponibilidade", getAgendaSemanal);
 
 export default router;
 
@@ -82,7 +84,7 @@ export default router;
  *       404:
  *         description: Paciente não encontrado
  */
-/**  
+/**
  * @swagger
  * /pacientes/{id}:
  *   put:
@@ -132,4 +134,61 @@ export default router;
  *     responses:
  *       200:
  *         description: Paciente excluído com sucesso
+ */
+
+/**
+ * @swagger
+ *   /pacientes/disponibilidade:
+ *     get:
+ *       summary: Busca a agenda de horários disponíveis para agendamento.
+ *       description: "Retorna os horários livres de um médico em um intervalo, usando uma regra de negócio codificada (Ex: 09:00 - 17:00)."
+ *       tags:
+ *         - Pacientes
+ *       parameters:
+ *         - name: medicoId
+ *           in: query
+ *           required: true
+ *           schema:
+ *             type: integer
+ *           description: ID do médico para checar a agenda.
+ *         - name: dataInicio
+ *           in: query
+ *           required: true
+ *           schema:
+ *             type: string
+ *             format: date
+ *             example: '2025-12-10'
+ *           description: Data de início do período (YYYY-MM-DD).
+ *         - name: dataFim
+ *           in: query
+ *           required: true
+ *           schema:
+ *             type: string
+ *             format: date
+ *             example: '2025-12-17'
+ *           description: Data de fim do período (YYYY-MM-DD).
+ *       responses:
+ *         '200':
+ *           description: Agenda detalhada com horários disponíveis por dia.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     data:
+ *                       type: string
+ *                       format: date
+ *                       example: '2025-12-10'
+ *                     horarios:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                         example: '10:00'
+ *                     disponivel:
+ *                       type: boolean
+ *                       example: true
+ *         '400':
+ *           description: Parâmetros faltando ou inválidos.
  */
