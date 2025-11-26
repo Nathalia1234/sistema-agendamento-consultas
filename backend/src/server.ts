@@ -16,6 +16,8 @@ import { swaggerDocs } from "./swagger.config.js";
 dotenv.config();
 
 const app = express();
+
+
 app.use(cors({origin: ["https://vercel.com/nathe557-4498s-projects/sistema-agendamento-consultas"],methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -25,6 +27,11 @@ app.use(express.json());
 
 // Conecta ao banco Neon
 connectDatabase();
+
+
+// Swagger
+swaggerDocs(app);
+
 
 // Rotas principais
 app.use("/api", userRoutes);
@@ -42,8 +49,7 @@ app.use("/api/pacientes", pacienteRoutes);
 app.use("/api/users", authRoutes);
 app.use("/api/protected", protectedRoutes);
 
-// Swagger
-swaggerDocs(app);
+
 
 // -----------------------------
 // Rota base — para teste local e vercel
