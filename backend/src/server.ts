@@ -1,35 +1,40 @@
+// Importa o Express
 import express from "express";
+// Importa o CORS para permitir requisições de outras origens
 import cors from "cors";
+// Importa o dotenv para variáveis de ambiente
 import dotenv from "dotenv";
 
+// Importa a conexão com o banco de dados
 import { connectDatabase } from "./database/connection.js";
+// Importa as rotas
 import userRoutes from "./routes/userRoutes.js";
 import consultaRoutes from "./routes/consultaRoutes.js";
 import medicoRoutes from "./routes/medicoRoutes.js";
 import pacienteRoutes from "./routes/pacienteRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import protectedRoutes from "./routes/protectedRoutes.js";
-
+// Importa a configuração do Swagger
 import { swaggerDocs } from "./swagger.config.js";
 
-
+// Carrega as variáveis de ambiente do arquivo .env
 dotenv.config();
-
+// Cria a aplicação Express
 const app = express();
 
-
+// Configura o CORS para permitir requisições de origens específicas
 app.use(cors({origin: ["https://vercel.com/nathe557-4498s-projects/sistema-agendamento-consultas"],methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
   
-
+// Configura o Express para interpretar JSON
 app.use(express.json());
 
 // Conecta ao banco Neon
 connectDatabase();
 
 
-// Swagger
+// Configuração do Swagger
 swaggerDocs(app);
 
 
@@ -47,6 +52,8 @@ app.use("/api/pacientes", pacienteRoutes);
 
 // Rotas de autenticação
 app.use("/api/users", authRoutes);
+
+// Rotas protegidas
 app.use("/api/protected", protectedRoutes);
 
 

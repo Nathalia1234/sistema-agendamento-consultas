@@ -5,7 +5,9 @@ import { User } from "../models/userModel.js";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
+// Serviço para gerenciar usuários
 export class UserService {
+  // Registro de um novo usuário
   async register(user: User) {
     const { name, email, password } = user;
 
@@ -19,6 +21,7 @@ export class UserService {
     return result.rows[0];
   }
 
+  // Login de usuário
   async login(email: string, password: string) {
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
     const user = result.rows[0];
@@ -32,6 +35,7 @@ export class UserService {
     return { token };
   }
 
+  // Obter todos os usuários
   async getAllUsers() {
   const result = await pool.query(
     "SELECT id, name, email FROM users ORDER BY id ASC"
@@ -39,6 +43,7 @@ export class UserService {
   return result.rows;
   }
   
+// Atualizar informações do usuário
 async updateUser(id: number, data: any) {
   const { name, email, password } = data;
 
@@ -62,6 +67,7 @@ async updateUser(id: number, data: any) {
   return result.rows[0];
   }
   
+// Deletar usuário
   async deleteUser(id: number) {
   const result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [id]);
 

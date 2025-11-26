@@ -8,15 +8,27 @@ import {
   cancelConsulta,
 } from "../controllers/consultaController.js";
 
+// Criação do roteador
 const router = Router();
 
+// Definição das rotas
+// Rotas para CRUD de consultas
+
+
+// Criar nova consulta
 router.post("/", createConsulta);
+// Listar todas as consultas
 router.get("/", getConsultas);
+// Buscar consulta por ID
 router.get("/:id", getConsultaById);
+// Atualizar consulta por ID
 router.put("/:id", updateConsulta);
+// Excluir consulta por ID
 router.delete("/:id", deleteConsulta);
+// Cancelar consulta por ID
 router.put("/cancelar/:id", cancelConsulta);
 
+// Exportar o roteador
 export default router;
 
 /**

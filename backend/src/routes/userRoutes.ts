@@ -2,7 +2,7 @@ import { Router } from "express";
 import { getAllUsers, registerUser, loginUser, updateUser, deleteUser   } from "../controllers/userController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 
-
+// Cria um roteador para rotas de usuário
 const router = Router();
 
 // Rota para registro
@@ -25,4 +25,5 @@ router.get("/protected", authMiddleware, (req, res) => {
   res.json({ message: "Acesso autorizado. Esta é uma rota protegida!" });
 });
 
+// Exporta o roteador para uso em outras partes da aplicação
 export default router;

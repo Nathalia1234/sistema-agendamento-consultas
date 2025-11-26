@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { registerUser, loginUser } from "../controllers/userController.js";
 
+// Cria uma nova instância do roteador
 const router = Router();
 
 /**
@@ -38,6 +39,7 @@ const router = Router();
  *       400:
  *         description: Erro ao registrar usuário
  */
+// Rota para registrar um novo usuário
 router.post("/register", registerUser);
 
 /**
@@ -65,6 +67,8 @@ router.post("/register", registerUser);
  *       401:
  *         description: Credenciais inválidas
  */
+// Rota para login do usuário
 router.post("/login", loginUser);
 
+// Exporta o roteador para uso em outros arquivos
 export default router;

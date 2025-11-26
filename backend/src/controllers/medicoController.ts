@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { pool } from "../database/connection.js";
 
+// Controladores para gerenciar médicos
+// Inclui listagem, busca por ID, criação, atualização, exclusão e obtenção da agenda
+// de consultas futuras do médico.
+
+// Listar todos os médicos
 export const listarMedicos = async (req: Request, res: Response) => {
   try {
     const result = await pool.query("SELECT * FROM medicos");
@@ -10,6 +15,7 @@ export const listarMedicos = async (req: Request, res: Response) => {
   }
 };
 
+// Buscar médico por ID
 export const buscarMedicoPorId = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -21,6 +27,7 @@ export const buscarMedicoPorId = async (req: Request, res: Response) => {
   }
 };
 
+// Criar novo médico
 export const criarMedico = async (req: Request, res: Response) => {
   try {
     const { nome, especialidade, telefone, email } = req.body;
@@ -34,6 +41,7 @@ export const criarMedico = async (req: Request, res: Response) => {
   }
 };
 
+// Atualizar médico existente
 export const atualizarMedico = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { nome, especialidade } = req.body;
@@ -49,6 +57,7 @@ export const atualizarMedico = async (req: Request, res: Response) => {
   }
 };
 
+// Excluir médico
 export const deletarMedico = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -60,6 +69,7 @@ export const deletarMedico = async (req: Request, res: Response) => {
   }
 };
 
+// Obter agenda de consultas futuras do médico
 export const getAgendaMedico = async (req: Request, res: Response) => {
     // É recomendado usar o ID do médico do token de autenticação (JWT)
     // Mas, para fins de teste, vamos pegá-lo do parâmetro de rota.

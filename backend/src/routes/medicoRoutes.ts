@@ -8,6 +8,7 @@ import {
   getAgendaMedico,
 } from "../controllers/medicoController.js";
 
+// Cria uma instância do roteador
 const router = Router();
 
 // Criar médico
@@ -28,6 +29,7 @@ router.delete("/:id", deletarMedico);
 // Agenda do medico
 router.get("/:id/agenda", getAgendaMedico);
 
+// Exporta o roteador para ser usado em outros arquivos
 export default router;
 
 /**

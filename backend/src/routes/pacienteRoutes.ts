@@ -9,15 +9,26 @@ import {
   getAgendaSemanal,
 } from "../controllers/pacienteController.js";
 
+// Definição das rotas para pacientes
 const router = Router();
 
+// Rotas CRUD para Pacientes
+
+
+// Cadastrar novo paciente
 router.post("/", criarPaciente);
+// Listar todos os pacientes
 router.get("/", listarPacientes);
+// Buscar paciente por ID
 router.get("/:id", buscarPacientePorId);
+// Atualizar paciente por ID
 router.put("/:id", atualizarPaciente);
+// Deletar paciente por ID
 router.delete("/:id", deletarPaciente);
+ // Obter agenda semanal de disponibilidade
 router.get("/disponibilidade", getAgendaSemanal);
 
+// Exporta o roteador de pacientes
 export default router;
 
 /**

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { pool } from "../database/connection.js";
 
+
 // Cadastrar paciente
 export const criarPaciente = async (req: Request, res: Response) => {
   try {
@@ -76,7 +77,7 @@ export const deletarPaciente = async (req: Request, res: Response) => {
   }
 };
 
-// NOVO: Buscar disponibilidade para um período
+// Buscar disponibilidade para um período
 export const getAgendaSemanal = async (req: Request, res: Response) => {
   const { medicoId, dataInicio, dataFim } = req.query;
 

@@ -5,7 +5,6 @@ import { ConsultaService } from "../services/consultaService.js";
 const consultaService = new ConsultaService();
 
 // Criar nova consulta com validações e checagem de conflito
-// Criar nova consulta com validações e checagem de conflito
 export const createConsulta = async (req: Request, res: Response) => {
   try {
     const { paciente_id, medico_id, data_consulta, descricao } = req.body;
@@ -142,6 +141,7 @@ export const deleteConsulta = async (req: Request, res: Response) => {
   }
 };
 
+// Cancelar consulta
 export async function cancelConsulta(req: Request, res: Response) {
   const consultaId = parseInt(req.params.id, 10);
 

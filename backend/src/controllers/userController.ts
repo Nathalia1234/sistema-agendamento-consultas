@@ -3,6 +3,7 @@ import { UserService } from "../services/userService.js";
 
 const userService = new UserService();
 
+// Controlador para registrar um novo usuário
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const user = await userService.register(req.body);
@@ -12,6 +13,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
+// Controlador para login de usuário
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -22,7 +24,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-//  Nova função para listar usuários
+//  Controlador para obter todos os usuários
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await userService.getAllUsers();
@@ -32,6 +34,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+// Controlador para atualizar um usuário
 export const updateUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -42,6 +45,7 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 };
 
+// Controlador para excluir um usuário
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
