@@ -1,27 +1,40 @@
-#  Sistema de Agendamento de Consultas — Backend
+#  Sistema de Agendamento de Consultas - Backend (TypeScript + Node + PostgreSQL)
 
-##  Introdução
+Este repositório contém o **backend oficial** do Sistema de Agendamento de Consultas, desenvolvido para a disciplina **Desenvolvimento Full Stack.**
 
-O **Sistema de Agendamento de Consultas** é um projeto desenvolvido em **TypeScript**, com o objetivo de gerenciar consultas médicas, pacientes e médicos de forma segura e eficiente.  
+A aplicação foi construída em **TypeScript**, seguindo arquitetura em camadas (Routes → Controllers → Services → Database), com autenticação JWT e banco de dados PostgreSQL hospedado no **Neon.**
 
-Esta aplicação representa o **módulo de backend**, responsável pela lógica de negócio, autenticação de usuários e comunicação com o banco de dados hospedado na **plataforma Neon** (PostgreSQL em nuvem).
+##  Objetivo do Projeto
 
-O projeto foi desenvolvido como parte da atividade da 3° unidade, na disciplina de Desenvolvimento Full Stack. 
+Desenvolver um sistema completo de agendamento médico, permitindo:
+
+- Cadastro de usuários, pacientes e médicos
+- Agendamento de consultas
+- Cancelamento de consultas
+- Consulta de horários disponíveis
+- Visualização da agenda futura do profissional
+- Autenticação com JWT
+- Integração com banco PostgreSQL (Neon)
+
+Este backend entrega **toda a lógica da Sprint 1**, necessária para operar as regras de negócio principais do sistema.
 
 ---
 
 ##  Tecnologias Utilizadas
 
-| Categoria | Tecnologias |
-|------------|--------------|
-| Linguagem | TypeScript |
-| Servidor | Node.js + Express |
-| Banco de Dados | PostgreSQL (Neon Cloud) |
-| Autenticação | JWT (Json Web Token) |
-| Segurança | bcrypt para criptografia de senhas |
-| Ambiente | dotenv |
-| ORM/Driver | pg |
-| Testes de rotas | Insomnia |
+| Categoria       | Tecnologias             |
+| --------------- | ----------------------- |
+| Linguagem       | TypeScript              |
+| Runtime         | Node.js                 |
+| Framework       | Express                 |
+| Banco de Dados  | PostgreSQL (Neon Cloud) |
+| Driver          | pg                      |
+| Autenticação    | JWT                     |
+| Criptografia    | bcrypt                  |
+| Ambiente        | dotenv                  |
+| Documentação    | Swagger UI              |
+| Testes de rotas | Insomnia                |
+
 
 ---
 
@@ -62,9 +75,9 @@ Onde:
 
 --- 
 
-## Estrutura do Banco de Dados
+## Estrutura do Banco de Dados (PostgreSQL - Neon)
 
-As tabelas principais criadas no Neon são:
+As tabelas utilizadas no backend:
 
 ```
 CREATE TABLE users (
@@ -101,7 +114,92 @@ CREATE TABLE consultas (
 ```
 ---
 
-## Documentação das Rotas
+## Funcionalidades Entregues na Sprint 1
+
+A Sprint 1 contempla **as funcionalidades essenciais de um sistema de agendamento médico.**
+
+###  1. Cadastro de Pacientes
+
+Endpoint permite criar pacientes com nome, idade, telefone e email.
+
+### 2. Visualização de Horários Disponíveis (Paciente)
+
+Gera horários entre 09:00 e 17:00 com intervalos de 30 minutos, removendo horários já ocupados pelo médico.
+
+**Rota**
+```
+GET /api/pacientes/disponibilidade?medicoId=1&dataInicio=2025-11-20&dataFim=2025-11-25
+```
+
+**Retorno**
+```
+[
+  {
+    "data": "2025-11-20",
+    "horarios": ["09:00", "09:30", "10:00", ...],
+    "disponivel": true
+  }
+]
+```
+
+### 3. Agendamento de Consulta (com validações completas)
+
+O agendamento agora possui **regras de negócio robustas:**
+
+- Verifica se o médico existe
+- Verifica se o paciente existe
+- Verifica se a data é válida
+- Impede agendamento no passado
+- Impede agendamentos duplicados para o mesmo médico no mesmo horário
+- Mensagens claras de erro
+- Retorno em formato consistente
+
+**Rota**
+```
+POST /api/consultas
+```
+
+**Erros possíveis**
+| Status | Descrição                    |
+| ------ | ---------------------------- |
+| 400    | Campos obrigatórios ausentes |
+| 404    | Médico/paciente não existe   |
+| 409    | Horário já ocupado           |
+| 500    | Erro no servidor             |
+
+
+### 4. Cancelamento de Consulta
+
+O cancelamento é realizado via:
+```
+DELETE /api/consultas/:id
+```
+> Essa exclusão libera automaticamente o horário para novos agendamentos.
+
+
+### 5. Visualização da Agenda do Profissional
+
+Lista todas as consultas futuras, incluindo informações do paciente.
+
+**Rota**
+```
+GET /api/medicos/:id/agenda
+```
+
+**Retorno**
+```
+[
+  {
+    "id": 10,
+    "paciente": "Nathalia Ohana",
+    "telefone": "71999999999",
+    "data_consulta": "2025-11-21 14:00",
+    "descricao": "Acompanhamento"
+  }
+]
+```
+--- 
+## Documentação Completa das Rotas
 
 ### Autenticação (/api)
 | Método | Rota        | Descrição                              |
@@ -127,15 +225,6 @@ CREATE TABLE consultas (
 | PUT    | `/consultas/:id` | Atualiza informações da consulta |
 | DELETE | `/consultas/:id` | Exclui uma consulta              |
 
-### Pacientes (/api/pacientes)
-| Método | Rota             | Descrição                  |
-| ------ | ---------------- | -------------------------- |
-| POST   | `/pacientes`     | Cadastra um novo paciente  |
-| GET    | `/pacientes`     | Lista todos os pacientes   |
-| GET    | `/pacientes/:id` | Busca um paciente por ID   |
-| PUT    | `/pacientes/:id` | Atualiza dados do paciente |
-| DELETE | `/pacientes/:id` | Remove paciente do sistema |
-
 
 ### Médicos (/api/medicos)
 | Método | Rota           | Descrição                      |
@@ -145,6 +234,19 @@ CREATE TABLE consultas (
 | GET    | `/medicos/:id` | Retorna um médico por ID       |
 | PUT    | `/medicos/:id` | Atualiza informações do médico |
 | DELETE | `/medicos/:id` | Exclui um médico do sistema    |
+| GET | `/medicos/:id/agenda` | Agenda do médico    |
+
+### Pacientes (/api/pacientes)
+| Método | Rota             | Descrição                  |
+| ------ | ---------------- | -------------------------- |
+| POST   | `/pacientes`     | Cadastra um novo paciente  |
+| GET    | `/pacientes`     | Lista todos os pacientes   |
+| GET    | `/pacientes/:id` | Busca um paciente por ID   |
+| PUT    | `/pacientes/:id` | Atualiza dados do paciente |
+| DELETE | `/pacientes/:id` | Remove paciente do sistema |
+| GET | `/pacientes/disponibilidade` | Disponibilidade |
+
+
 
 ---
 
@@ -243,7 +345,7 @@ JWT_SECRET=chave_super_secreta_gerada
 PORT=3000
 ```
 
-### 4. Executar o servidor
+### 4. Rodar localmente
 ```
 npm run dev
 ```
@@ -314,6 +416,13 @@ Durante os testes pós-deploy, foi possível confirmar o funcionamento correto d
 
 # Conclusão
 
-O backend do **Sistema de Agendamento de Consultas** fornece a base lógica e estrutural para o gerenciamento de usuários, médicos, pacientes e consultas, com autenticação via JWT e integração direta com o banco **Neon PostgreSQL.**
+Este backend entrega de forma completa e funcional toda a **Sprint 1**, incluindo:
 
-O projeto reforça os conceitos de **arquitetura em camadas, segurança de dados e desenvolvimento orientado a serviços (REST)**, fundamentais para aplicações reais na área da saúde e gestão de sistemas.
+- Lógica empresarial de agendamento
+- Checagem de horários e conflitos
+- Cancelamento
+- Agenda completa do médico
+- Integração com banco Neon
+- Documentação profissional via Swagger
+
+Pronto para integração com o frontend e evolução nas próximas Sprints.
