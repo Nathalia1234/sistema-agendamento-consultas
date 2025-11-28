@@ -1,41 +1,93 @@
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider } from "next-themes";
-import { Layout } from "./components/Layout";
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Pacientes from "./pages/Pacientes";
-import Medicos from "./pages/Medicos";
-import Consultas from "./pages/Consultas";
-import Configuracoes from "./pages/Configuracoes";
-import NotFound from "./pages/NotFound";
+import { Layout } from "@/components/Layout";
 
-const queryClient = new QueryClient();
+import Login from "@/pages/Login";
+import Index from "@/pages/Index";
+import Consultas from "@/pages/Consultas";
+import Pacientes from "@/pages/Pacientes";
+import Medicos from "@/pages/Medicos";
+import Dashboard from "@/pages/Dashboard";
+import NotFound from "@/pages/NotFound";
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner position="top-right" />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Layout><Dashboard /></Layout>} />
-            <Route path="/pacientes" element={<Layout><Pacientes /></Layout>} />
-            <Route path="/medicos" element={<Layout><Medicos /></Layout>} />
-            <Route path="/consultas" element={<Layout><Consultas /></Layout>} />
-            <Route path="/configuracoes" element={<Layout><Configuracoes /></Layout>} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const token = useAuthStore((state) => state.token);
 
-export default App;
+  if (!token) return <Navigate to="/login" replace />;
+
+  return children;
+}
+
+export default function App() {
+  return (
+    <>
+      <Toaster />
+      <BrowserRouter>
+        <Routes>
+          {/* Rotas públicas */}
+          <Route path="/login" element={<Login />} />
+
+          {/* Rotas protegidas + Layout */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Index />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/consultas"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Consultas />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/medicos"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Medicos />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/pacientes"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Pacientes />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <Dashboard />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* 404 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </>
+  );
+}

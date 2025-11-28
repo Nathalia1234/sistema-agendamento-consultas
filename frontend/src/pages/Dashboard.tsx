@@ -41,9 +41,9 @@ export default function Dashboard() {
         api.get('/consultas'),
       ]);
 
-      const pacientes = pacientesRes.data;
-      const medicos = medicosRes.data;
-      const consultas = consultasRes.data;
+      const pacientes = pacientesRes.data as any[];
+      const medicos = medicosRes.data as any[];
+      const consultas = consultasRes.data as any[];
 
       // Calcular consultas do mês atual
       const currentMonth = new Date().getMonth();

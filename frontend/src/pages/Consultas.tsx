@@ -103,10 +103,10 @@ export default function Consultas() {
         api.get('/pacientes'),
         api.get('/medicos'),
       ]);
-      setConsultas(consultasRes.data);
-      setFilteredConsultas(consultasRes.data);
-      setPacientes(pacientesRes.data);
-      setMedicos(medicosRes.data);
+      setConsultas(consultasRes.data as Consulta[]);
+      setFilteredConsultas(consultasRes.data as Consulta[]);
+      setPacientes(pacientesRes.data as Paciente[]);
+      setMedicos(medicosRes.data as Medico[]);
       setLoading(false);
     } catch (error) {
       toast.error('Erro ao carregar dados');

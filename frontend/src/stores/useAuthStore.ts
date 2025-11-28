@@ -1,95 +1,57 @@
-import { create } from 'zustand';
-import api from '@/services/api';
-import { toast } from 'sonner';
-
-interface User {
-  id: string;
-  nome: string;
-  email: string;
-  role?: string;
-}
+import { create } from "zustand";
+import { api } from "@/services/api";
 
 interface AuthState {
-  user: User | null;
   token: string | null;
+  user: any | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, senha: string) => Promise<void>;
-  register: (nome: string, email: string, senha: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   checkAuth: () => void;
 }
 
+interface LoginResponse {
+  token: string;
+}
+
 export const useAuthStore = create<AuthState>((set) => ({
+  token: localStorage.getItem("token"),
   user: null,
-  token: null,
-  isAuthenticated: false,
-  isLoading: false,
+  isAuthenticated: !!localStorage.getItem("token"),
 
-  login: async (email: string, senha: string) => {
-    set({ isLoading: true });
+  login: async (email, password) => {
     try {
-      const response = await api.post('/auth/login', { email, senha });
-      const { token, usuario } = response.data;
-      
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(usuario));
-      
+      const res = await api.post<LoginResponse>("/login", { email, password });
+
+      localStorage.setItem("token", res.data.token);
+
       set({
-        user: usuario,
-        token,
+        token: res.data.token,
         isAuthenticated: true,
-        isLoading: false,
       });
-      
-      toast.success('Login realizado com sucesso!');
-    } catch (error: any) {
-      set({ isLoading: false });
-      toast.error(error.response?.data?.message || 'Erro ao fazer login');
-      throw error;
-    }
-  },
 
-  register: async (nome: string, email: string, senha: string) => {
-    set({ isLoading: true });
-    try {
-      await api.post('/auth/registrar', { nome, email, senha });
-      toast.success('Cadastro realizado! Faça login para continuar.');
-      set({ isLoading: false });
-    } catch (error: any) {
-      set({ isLoading: false });
-      toast.error(error.response?.data?.message || 'Erro ao cadastrar');
-      throw error;
+      return true;
+    } catch (e) {
+      return false;
     }
   },
 
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+
     set({
-      user: null,
       token: null,
+      user: null,
       isAuthenticated: false,
     });
-    toast.success('Logout realizado com sucesso!');
   },
 
   checkAuth: () => {
-    const token = localStorage.getItem('token');
-    const userStr = localStorage.getItem('user');
-    
-    if (token && userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        set({
-          user,
-          token,
-          isAuthenticated: true,
-        });
-      } catch {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-      }
-    }
+    const token = localStorage.getItem("token");
+
+    set({
+      token,
+      isAuthenticated: !!token
+    });
   },
 }));

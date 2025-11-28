@@ -70,8 +70,8 @@ export default function Medicos() {
   const fetchMedicos = async () => {
     try {
       const response = await api.get('/medicos');
-      setMedicos(response.data);
-      setFilteredMedicos(response.data);
+      setMedicos(response.data as Medico[]);
+      setFilteredMedicos(response.data as Medico[]);
       setLoading(false);
     } catch (error) {
       toast.error('Erro ao carregar médicos');

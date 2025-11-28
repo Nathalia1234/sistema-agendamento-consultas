@@ -70,8 +70,8 @@ export default function Pacientes() {
   const fetchPacientes = async () => {
     try {
       const response = await api.get('/pacientes');
-      setPacientes(response.data);
-      setFilteredPacientes(response.data);
+      setPacientes(response.data as Paciente[]);
+      setFilteredPacientes(response.data as Paciente[]);
       setLoading(false);
     } catch (error) {
       toast.error('Erro ao carregar pacientes');
