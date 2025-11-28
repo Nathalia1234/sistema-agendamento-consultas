@@ -6,7 +6,7 @@ import {
   atualizarMedico,
   deletarMedico,
   getAgendaMedico,
-} from "../controllers/medicoController.js";
+} from "../deprecated/medicoController.js";
 
 // Cria uma instância do roteador
 const router = Router();

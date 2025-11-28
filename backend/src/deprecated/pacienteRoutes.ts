@@ -7,7 +7,7 @@ import {
   atualizarPaciente,
   deletarPaciente,
   getAgendaSemanal,
-} from "../controllers/pacienteController.js";
+} from "./pacienteController.js";
 
 // Definição das rotas para pacientes
 const router = Router();

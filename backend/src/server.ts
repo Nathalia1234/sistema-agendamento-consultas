@@ -4,18 +4,24 @@ import express from "express";
 import cors from "cors";
 // Importa o dotenv para variáveis de ambiente
 import dotenv from "dotenv";
+// Importa a configuração do Swagger
+import { swaggerDocs } from "./swagger.config.js";
+// Importa o Swagger UI Express
+import swaggerUi from "swagger-ui-express";
+
 
 // Importa a conexão com o banco de dados
 import { connectDatabase } from "./database/connection.js";
 // Importa as rotas
+import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import consultaRoutes from "./routes/consultaRoutes.js";
-import medicoRoutes from "./routes/medicoRoutes.js";
-import pacienteRoutes from "./routes/pacienteRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
-import protectedRoutes from "./routes/protectedRoutes.js";
+
+
+//import medicoRoutes from "./routes/medicoRoutes.js";
+//import pacienteRoutes from "./deprecated/pacienteRoutes.js";
+//import protectedRoutes from "./deprecated/protectedRoutes.js";
 // Importa a configuração do Swagger
-import { swaggerDocs } from "./swagger.config.js";
 
 // Carrega as variáveis de ambiente do arquivo .env
 dotenv.config();
@@ -26,47 +32,60 @@ const app = express();
 app.use(cors({origin: ["https://vercel.com/nathe557-4498s-projects/sistema-agendamento-consultas"],methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
-  
+
+// Documentação Swagger (opcional para apresentação)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 // Configura o Express para interpretar JSON
 app.use(express.json());
 
 // Conecta ao banco Neon
 connectDatabase();
 
-
 // Configuração do Swagger
 swaggerDocs(app);
 
 
-// Rotas principais
-app.use("/api", userRoutes);
+// Rotas principais do sistema
+// Rotas de autenticação e usuários
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 // Rotas de consultas
-app.use("/api/consultas", consultaRoutes);
+app.use("/consultas", consultaRoutes);
 
 // Rotas de médicos
-app.use("/api/medicos", medicoRoutes);
+//app.use("/medicos", medicoRoutes);
 
 // Rotas de pacientes
-app.use("/api/pacientes", pacienteRoutes);
-
-// Rotas de autenticação
-app.use("/api/users", authRoutes);
+//app.use("/pacientes", pacienteRoutes);
 
 // Rotas protegidas
-app.use("/api/protected", protectedRoutes);
-
+//app.use("/protected", protectedRoutes);
 
 
 // -----------------------------
 // Rota base — para teste local e vercel
 // -----------------------------
 app.get("/", (req, res) => {
-  res.send("✅ API está rodando com sucesso!");
+  res.json({
+    status: "✅ Online",
+    message: "Sistema de Agendamento de Consultas - API funcionando.",
+  });
 });
 
-// Porta de execução
+// Erro 404 para endpoints não encontrados
+app.use((req, res) => {
+  res.status(404).json({
+    error: "Rota não encontrada",
+    path: req.originalUrl,
+  });
+});
+
+// Inicialização do servidor
 const PORT = process.env.PORT || 3000;
+
+// Inicia o servidor na porta especificada
 app.listen(PORT, () =>
   console.log(`✅ Servidor rodando na porta ${PORT}`)
 );

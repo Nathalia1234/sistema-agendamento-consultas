@@ -39,9 +39,19 @@ const router = Router();
  *       400:
  *         description: Erro ao registrar usuário
  */
-// Rota para registrar um novo usuário
-router.post("/register", registerUser);
 
+/**
+ * Rota: POST /auth/register
+ * Cadastro de usuário com validação básica e retorno de token + user
+ */
+router.post("/register", async (req, res) => {
+  try {
+    await registerUser(req, res);
+  } catch (error) {
+    console.error("Erro em /auth/register:", error);
+    res.status(500).json({ error: "Erro interno no servidor" });
+  }
+});
 /**
  * @swagger
  * /users/login:
@@ -67,8 +77,18 @@ router.post("/register", registerUser);
  *       401:
  *         description: Credenciais inválidas
  */
-// Rota para login do usuário
-router.post("/login", loginUser);
+/**
+ * Rota: POST /auth/login
+ * Login com autenticação JWT
+ */
+router.post("/login", async (req, res) => {
+  try {
+    await loginUser(req, res);
+  } catch (error) {
+    console.error("Erro em /auth/login:", error);
+    res.status(500).json({ error: "Erro interno no servidor" });
+  }
+});
 
 // Exporta o roteador para uso em outros arquivos
 export default router;

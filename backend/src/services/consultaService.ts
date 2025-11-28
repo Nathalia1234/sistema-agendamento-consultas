@@ -41,14 +41,20 @@ export class ConsultaService {
   }
 
    // Cancela uma consulta
-  async cancelConsulta(consultaId: number) {
-  const updateResult = await pool.query("UPDATE consultas SET status = 'CANCELADA' WHERE id = $1 RETURNING id",
-    [consultaId]
-  );
-  if (updateResult.rows.length === 0) {
-    throw new Error("Consulta não encontrada.");
-  }
+async cancelConsulta(consultaId: number): Promise<{ message: string }> {
+    // Verifica se a consulta existe
+    const consultaExistente = await pool.query(
+      "SELECT id FROM consultas WHERE id = $1",
+      [consultaId]
+    );
 
-  return updateResult.rows[0];
-}
+    if (consultaExistente.rowCount === 0) {
+      throw new Error("Consulta não encontrada");
+    }
+
+    // Cancela a consulta
+    await pool.query("DELETE FROM consultas WHERE id = $1", [consultaId]);
+
+    return { message: "Consulta cancelada com sucesso" };
+  }
 }

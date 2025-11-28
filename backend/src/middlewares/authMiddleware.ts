@@ -14,7 +14,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    (req as any).user = decoded;
+    (req as any).user = decoded; // salva dados do usuário no objeto req
     next();
   } catch (error) {
     res.status(401).json({ error: "Token inválido." });

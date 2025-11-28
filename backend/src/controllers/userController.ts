@@ -1,58 +1,105 @@
 import { Request, Response } from "express";
-import { UserService } from "../services/userService.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { findUserByEmail, createUser, findUserById } from "../models/userModel.js";
 
-const userService = new UserService();
+const JWT_SECRET = process.env.JWT_SECRET || "admin123";
 
-// Controlador para registrar um novo usuário
-export const registerUser = async (req: Request, res: Response) => {
+// -------------------------
+// REGISTRO DE USUÁRIO
+// -------------------------
+
+export async function registerUser(req: Request, res: Response) {
   try {
-    const user = await userService.register(req.body);
-    res.status(201).json(user);
-  } catch (error: any) {
-    res.status(400).json({ error: error.message });
-  }
-};
+    const { nome, email, senha } = req.body;
 
-// Controlador para login de usuário
-export const loginUser = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body;
-    const token = await userService.login(email, password);
-    res.status(200).json(token);
-  } catch (error: any) {
-    res.status(401).json({ error: error.message });
-  }
-};
+    if (!nome || !email || !senha) {
+      return res.status(400).json({ error: "Preencha todos os campos." });
+    }
 
-//  Controlador para obter todos os usuários
-export const getAllUsers = async (req: Request, res: Response) => {
-  try {
-    const users = await userService.getAllUsers();
-    res.status(200).json(users);
-  } catch (error: any) {
-    res.status(500).json({ error: "Erro ao buscar usuários." });
-  }
-};
+    const userExists = await findUserByEmail(email);
+    if (userExists) {
+      return res.status(400).json({ error: "E-mail já cadastrado." });
+    }
 
-// Controlador para atualizar um usuário
-export const updateUser = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const user = await userService.updateUser(parseInt(id), req.body);
-    res.status(200).json(user);
-  } catch (error: any) {
-    res.status(400).json({ error: error.message });
-  }
-};
+    const hashedPassword = await bcrypt.hash(senha, 10);
 
-// Controlador para excluir um usuário
-export const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    await userService.deleteUser(parseInt(id));
-    res.status(200).json({ message: "Usuário excluído com sucesso." });
-  } catch (error: any) {
-    res.status(400).json({ error: error.message });
+    const newUser = await createUser(nome, email, hashedPassword);
+
+    return res.status(201).json({
+      message: "Usuário registrado com sucesso!",
+      user: newUser,
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao registrar usuário." });
   }
-};
+}
+
+
+// -----------------------------------
+// LOGIN
+// -----------------------------------
+export async function loginUser(req: Request, res: Response) {
+  try {
+    const { email, senha } = req.body;
+
+    if (!email || !senha) {
+      return res.status(400).json({ error: "Informe e-mail e senha." });
+    }
+
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: "Usuário não encontrado." });
+    }
+
+    const senhaValida = await bcrypt.compare(senha, user.senha);
+    if (!senhaValida) {
+      return res.status(400).json({ error: "Senha incorreta." });
+    }
+
+    const token = jwt.sign(
+      { id: user.id },
+      JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    return res.status(200).json({
+      message: "Login realizado com sucesso.",
+      token,
+      user: {
+        id: user.id,
+        nome: user.nome,
+        email: user.email
+      }
+    });
+
+  } catch (error) {
+    return res.status(500).json({ error: "Erro ao realizar login." });
+  }
+}
+
+// -----------------------------------
+// PERFIL DO USUÁRIO AUTENTICADO
+// -----------------------------------
+export async function getUserProfile(req: Request, res: Response) {
+  try {
+    const { userId } = req as any;
+
+const user = await findUserById(userId);
+if (!user) {
+  return res.status(404).json({ error: "Usuário não encontrado." });
+}
+
+    return res.status(200).json({
+      id: user.id,
+      nome: user.nome,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error("Erro ao obter perfil:", error);
+    return res.status(500).json({ error: "Erro interno ao buscar perfil." });
+  }
+}
+
 

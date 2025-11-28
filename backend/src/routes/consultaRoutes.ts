@@ -1,4 +1,5 @@
-import { Router } from "express";
+import express from "express";
+
 import {
   createConsulta,
   getConsultas,
@@ -8,25 +9,26 @@ import {
   cancelConsulta,
 } from "../controllers/consultaController.js";
 
-// Criação do roteador
-const router = Router();
+// Cria o roteador
+const router = express.Router();
 
-// Definição das rotas
-// Rotas para CRUD de consultas
-
+// Cancelar consulta – importante vir ANTES de "/:id"
+router.delete("/cancel/:id", cancelConsulta);
 
 // Criar nova consulta
 router.post("/", createConsulta);
+
 // Listar todas as consultas
 router.get("/", getConsultas);
+
 // Buscar consulta por ID
 router.get("/:id", getConsultaById);
-// Atualizar consulta por ID
+
+// Atualizar consulta
 router.put("/:id", updateConsulta);
-// Excluir consulta por ID
+
+// Deletar consulta
 router.delete("/:id", deleteConsulta);
-// Cancelar consulta por ID
-router.put("/cancelar/:id", cancelConsulta);
 
 // Exportar o roteador
 export default router;
