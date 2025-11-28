@@ -157,30 +157,31 @@ export default router;
 
 /**
  * @swagger
- * /consultas/cancelar/{id}:
- * put:
- * summary: Cancelar uma consulta agendada
- * description: Atualiza o status da consulta para 'CANCELADA'. Requer autenticação JWT e verifica se o usuário autenticado é o paciente que agendou.
- * tags: [Consultas]
- * security:
- * - bearerAuth: []
- * parameters:
- * - name: id
- * in: path
- * required: true
- * schema:
- * type: integer
- * description: ID da consulta a ser cancelada
- * responses:
- * 200:
- * description: Consulta cancelada com sucesso. O horário foi liberado.
- * 401:
- * description: Não autorizado (Token inválido ou não fornecido)
- * 403:
- * description: Acesso negado. Você só pode cancelar suas próprias consultas.
- * 404:
- * description: Consulta não encontrada
- * 500:
- * description: Erro interno do servidor ao processar o cancelamento
+ * /consultas/cancel/{id}:
+ *   put:
+ *     summary: Cancelar uma consulta agendada
+ *     description: Atualiza o status da consulta para 'CANCELADA'. Requer token JWT.
+ *     tags: [Consultas]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID da consulta a ser cancelada
+ *     responses:
+ *       200:
+ *         description: Consulta cancelada com sucesso. O horário foi liberado.
+ *       401:
+ *         description: Não autorizado — token inválido ou ausente.
+ *       403:
+ *         description: Acesso negado — o usuário só pode cancelar suas próprias consultas.
+ *       404:
+ *         description: Consulta não encontrada.
+ *       500:
+ *         description: Erro interno no servidor.
  */
+
 
