@@ -15,7 +15,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    senha: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,15 +23,15 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await api.post('/users/login', formData);
+      const response = await api.post('/auth/login', formData);
       const { token, user } = response.data;
       
       login(token, user);
       toast.success('Login realizado com sucesso!');
       navigate('/dashboard');
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao fazer login';
-      toast.error(message);
+      const backendError =   error.response?.data?.error ||   error.response?.data?.message ||   'Erro ao fazer login';
+      toast.error(backendError);
     } finally {
       setLoading(false);
     }
@@ -64,6 +64,7 @@ const Login = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="pl-11 h-12"
+                  autoComplete="new-email"
                   required
                 />
               </div>
@@ -79,9 +80,10 @@ const Login = () => {
                   id="password"
                   type="password"
                   placeholder="••••••••"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  value={formData.senha}
+                  onChange={(e) => setFormData({ ...formData, senha: e.target.value })}
                   className="pl-11 h-12"
+                  autoComplete="new-password"
                   required
                 />
               </div>

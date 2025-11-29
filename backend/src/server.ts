@@ -29,7 +29,9 @@ dotenv.config();
 const app = express();
 
 // Configura o CORS para permitir requisições de origens específicas
-app.use(cors({origin: ["https://vercel.com/nathe557-4498s-projects/sistema-agendamento-consultas"],methods: ["GET", "POST", "PUT", "DELETE"],
+app.use(cors({
+  origin: ["https://vercel.com/nathe557-4498s-projects/sistema-agendamento-consultas", "http://localhost:8080"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 

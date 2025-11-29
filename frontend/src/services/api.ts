@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const BASE_URL = 'https://sistema-agendamento-consultas-phi.vercel.app/api';
-const BASE_URL = 'http://localhost:3000/api';
+ const BASE_URL = 'https://sistema-agendamento-consultas-phi.vercel.app';
+//const BASE_URL = 'http://localhost:3000';
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -10,7 +10,7 @@ export const api = axios.create({
   },
 });
 
-// Interceptor para adicionar token automaticamente
+// Adiciona token automaticamente antes de cada requisição
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -24,7 +24,20 @@ api.interceptors.request.use(
   }
 );
 
-// Interceptor para tratamento de erros
+/*
+Rotas CERTAS do backend:
+POST   /auth/register
+POST   /auth/login
+GET    /users/me
+POST   /consultas
+GET    /consultas
+GET    /consultas/:id
+PUT    /consultas/:id
+DELETE /consultas/:id
+PUT    /consultas/cancel/:id
+*/
+
+// Tratamento global de erros
 api.interceptors.response.use(
   (response) => response,
   (error) => {
