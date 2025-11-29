@@ -129,7 +129,11 @@ export const updateConsulta = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Consulta não encontrada" });
     }
 
-    res.status(200).json(result.rows[0]);
+    return res.status(200).json({
+      message: "Consulta atualizada com sucesso!",
+      consulta: result.rows[0]
+    });
+
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
@@ -146,10 +150,10 @@ export const deleteConsulta = async (req: Request, res: Response) => {
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: "Consulta não encontrada" });
+      return res.status(404).json({ error: "Consulta não encontrada!" });
     }
 
-    res.json({ message: "Consulta excluída com sucesso" });
+    res.json({ message: "Consulta excluída com sucesso!" });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -163,16 +167,16 @@ export const cancelConsulta = async (req: Request, res: Response) => {
     await consultaService.cancelConsulta(parseInt(req.params.id, 10));
 
     return res.status(200).json({
-      message: "Consulta cancelada com sucesso.",
+      message: "Consulta cancelada com sucesso!",
     });
   } catch (error: any) {
-    if (error.message.includes("Consulta não encontrada")) {
+    if (error.message.includes("Consulta não encontrada!")) {
       return res.status(404).json({ error: error.message });
     }
 
     console.error("Erro ao cancelar consulta:", error);
     return res.status(500).json({
-      error: "Erro interno ao processar cancelamento",
+      error: "Erro interno ao processar cancelamento!",
     });
   }
 };

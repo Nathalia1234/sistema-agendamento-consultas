@@ -13,7 +13,7 @@ const router = Router();
 
 /**
  * @swagger
- * /users/register:
+ * /auth/register:
  *   post:
  *     summary: Registrar um novo usuário
  *     tags: [Autenticação]
@@ -54,7 +54,7 @@ router.post("/register", async (req, res) => {
 });
 /**
  * @swagger
- * /users/login:
+ * /auth/login:
  *   post:
  *     summary: Login do usuário
  *     tags: [Autenticação]
