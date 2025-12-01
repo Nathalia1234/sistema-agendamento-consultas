@@ -4,4 +4,7 @@ export declare class ConsultaService {
     buscarConsultaPorId(id: number): Promise<any>;
     atualizarConsulta(id: number, data: any): Promise<any>;
     deletarConsulta(id: number): Promise<void>;
+    cancelConsulta(consultaId: number): Promise<{
+        message: string;
+    }>;
 }

@@ -1,7 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { pool } from "../database/connection.js";
-import { User } from "../models/userModel.js";
+
+interface User {
+  id?: number;
+  name: string;
+  email: string;
+  password: string;
+}
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 

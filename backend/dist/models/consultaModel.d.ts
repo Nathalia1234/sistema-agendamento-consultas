@@ -1,7 +1,2 @@
-export interface Consulta {
-    id?: number;
-    paciente_id: number;
-    medico_id: number;
-    data_consulta: string;
-    descricao?: string;
-}
+export declare function createConsulta(pacienteId: number, medicoId: number, horario: string): Promise<any>;
+export declare function listarConsultasPorUsuario(userId: number): Promise<any[]>;

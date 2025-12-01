@@ -2,13 +2,16 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { pool } from "../database/connection.js";
 const JWT_SECRET = process.env.JWT_SECRET;
+// Serviço para gerenciar usuários
 export class UserService {
+    // Registro de um novo usuário
     async register(user) {
         const { name, email, password } = user;
         const hashedPassword = await bcrypt.hash(password, 10);
         const result = await pool.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email", [name, email, hashedPassword]);
         return result.rows[0];
     }
+    // Login de usuário
     async login(email, password) {
         const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
         const user = result.rows[0];
@@ -20,10 +23,12 @@ export class UserService {
         const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: "1h" });
         return { token };
     }
+    // Obter todos os usuários
     async getAllUsers() {
         const result = await pool.query("SELECT id, name, email FROM users ORDER BY id ASC");
         return result.rows;
     }
+    // Atualizar informações do usuário
     async updateUser(id, data) {
         const { name, email, password } = data;
         // Se houver uma nova senha, gera o hash
@@ -39,6 +44,7 @@ export class UserService {
         }
         return result.rows[0];
     }
+    // Deletar usuário
     async deleteUser(id) {
         const result = await pool.query("DELETE FROM users WHERE id = $1 RETURNING id", [id]);
         if (result.rows.length === 0) {
