@@ -1,0 +1,701 @@
+_type: export
+__export_format: 4
+__export_date: 2025-11-20T22:44:55.505Z
+__export_source: insomnia.desktop.app:v2023.5.8
+resources:
+  - _id: req_119a77aec5bf4cd0a624547233904e5b
+    parentId: fld_e4727befcdbd4da8818d08bf30d66937
+    modified: 1763672959944
+    created: 1763666960570
+    url: "{{base_url}}/api/pacientes"
+    name: Cadastrar paciente
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "nome": "Amanda Oliveira",
+          "idade": 45,
+          "telefone": "(71) 97777-6666",
+          "email": "amanda.oliveira@example.com"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666960570
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_e4727befcdbd4da8818d08bf30d66937
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763666950947
+    created: 1763666950947
+    name: Pacientes
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1763666950947
+    _type: request_group
+  - _id: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    parentId: null
+    modified: 1763663422607
+    created: 1763663422607
+    name: Sistema Agendamento
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_f63ffcb603424e9785c83295aad2947b
+    parentId: fld_e4727befcdbd4da8818d08bf30d66937
+    modified: 1763667129546
+    created: 1763666959552
+    url: "{{base_url}}/api/pacientes"
+    name: Listar pacientes
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666959552
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_8cdee43c36e548a591d6f2a324767a49
+    parentId: fld_e4727befcdbd4da8818d08bf30d66937
+    modified: 1763671973409
+    created: 1763666958411
+    url: "{{base_url}}/api/pacientes/{{paciente_id}}"
+    name: Buscar paciente
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666958411
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2936441353e74279a03b85869f9e2ce2
+    parentId: fld_e4727befcdbd4da8818d08bf30d66937
+    modified: 1763672924024
+    created: 1763666957456
+    url: "{{base_url}}/api/pacientes/{{paciente_id}}"
+    name: Atualizar paciente
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome": "Carlos Andrade",
+        	"idade": 49,
+        	"telefone": "(71) 97777-6666",
+        	"email": "carlos.silva@example.com"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666957456
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_3d9b2c90685c472f9e6a100a8e4a1efd
+    parentId: fld_e4727befcdbd4da8818d08bf30d66937
+    modified: 1763671964615
+    created: 1763666956116
+    url: "{{base_url}}/api/pacientes/{{paciente_id}}"
+    name: Excluir paciente
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666956116
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_f8d27650e337459b8c343488118ea167
+    parentId: fld_02c65c16e07a484aa96120f20f80e188
+    modified: 1763672003023
+    created: 1763666852002
+    url: "{{base_url}}/api/medicos"
+    name: Cadastrar médico
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "nome": "Dra. Fernanda Lima",
+          "especialidade": "Cardiologia",
+          "telefone": "(71) 98888-7777",
+          "email": "fernanda.lima@example.com"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666852002
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_02c65c16e07a484aa96120f20f80e188
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763666841342
+    created: 1763666841342
+    name: Médicos
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1763666841342
+    _type: request_group
+  - _id: req_f776e344355e4da18682a04362032970
+    parentId: fld_02c65c16e07a484aa96120f20f80e188
+    modified: 1763667113358
+    created: 1763666850983
+    url: "{{base_url}}/api/medicos"
+    name: Listar médicos
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666850983
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_e28ab91ef785457ea54dd5e2a7d50968
+    parentId: fld_02c65c16e07a484aa96120f20f80e188
+    modified: 1763671951420
+    created: 1763666849931
+    url: "{{base_url}}/api/medicos/{{medico_id}}"
+    name: Buscar médico
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666849931
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_528073a5e67646c09e95c4b842364194
+    parentId: fld_02c65c16e07a484aa96120f20f80e188
+    modified: 1763672295603
+    created: 1763666848784
+    url: "{{base_url}}/api/medicos/{{medico_id}}"
+    name: Atualizar médico
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"nome": "Dra. Fernanda Oliveira",
+        	"especialidade": "Cardiologia",
+        	"telefone": "(71) 98888-7777",
+        	"email": "fernanda.lima@example.com"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666848784
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_e6ac03659f1944d5b25d0df5e4ab6e44
+    parentId: fld_02c65c16e07a484aa96120f20f80e188
+    modified: 1763671942260
+    created: 1763666847582
+    url: "{{base_url}}/api/medicos/{{medico_id}}"
+    name: Excluir médico
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666847582
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_fba69cf25ee944deb378b0cda2a67dc8
+    parentId: fld_ba8ce22b7242425b8f0323b0c6df0fc8
+    modified: 1763675312444
+    created: 1763666151670
+    url: "{{base_url}}/api/consultas"
+    name: Criar Consulta
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "paciente_id": 2,
+          "medico_id": 2,
+          "data_consulta": "2025-11-25T14:00:00",
+          "descricao": "Consulta Teste"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+        id: pair_1e0d904c12fa429f95b942b7513910d9
+      - id: pair_945cc765a2a44ed5bf7aa250275b6c9e
+        name: Authorization
+        value: Bearer {{token}}
+        description: ""
+    authentication: {}
+    metaSortKey: -1763666151670
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_ba8ce22b7242425b8f0323b0c6df0fc8
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763666134304
+    created: 1763666134304
+    name: Consultas
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1763666134304
+    _type: request_group
+  - _id: req_6d6ee600e2d04246820e397e70dff9a7
+    parentId: fld_ba8ce22b7242425b8f0323b0c6df0fc8
+    modified: 1763670285833
+    created: 1763666150666
+    url: "{{base_url}}/api/consultas"
+    name: Listar Consultas
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+        id: pair_c7b44cc60b0a46ebb3aca6aa5559418b
+      - id: pair_c1ac8de9472040c087418e39c6da9b92
+        name: Authorization
+        value: Bearer {{token}}
+        description: ""
+    authentication: {}
+    metaSortKey: -1763666150666
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d0abc36e663548af9e1427d66ae45807
+    parentId: fld_ba8ce22b7242425b8f0323b0c6df0fc8
+    modified: 1763671914161
+    created: 1763666149562
+    url: "{{base_url}}/api/consultas/{{consulta_id}}"
+    name: Buscar consulta por ID
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666149562
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ff336f49e87a45a9885eeef18c2df4be
+    parentId: fld_ba8ce22b7242425b8f0323b0c6df0fc8
+    modified: 1763673125113
+    created: 1763666148427
+    url: "{{base_url}}/api/consultas/{{consulta_id}}"
+    name: Atualizar Consulta
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"data_consulta": "2025-11-25T14:30:00",
+        	"descricao": "Consulta Nutricionista"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666148427
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_9e8fcc6b7b5941c5b8586f7bf11cdfbe
+    parentId: fld_ba8ce22b7242425b8f0323b0c6df0fc8
+    modified: 1763671926295
+    created: 1763666146037
+    url: "{{base_url}}/api/consultas/{{consulta_id}}"
+    name: Deletar Consulta
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763666146037
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_192faad81c7f48aa8868fe70d1c4b8ba
+    parentId: fld_35a1ce9678654686838ccabdf81c59d6
+    modified: 1763665503682
+    created: 1763663918663
+    url: "{{ base_url }}/api/protected"
+    name: Rota Protegida
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+        id: pair_db9fd0029fb74ee88c771cf6521fc3f5
+      - id: pair_933c05b4ecda4a72934101970e5c0c9c
+        name: Authorization
+        value: Bearer {{token}}
+        description: ""
+    authentication: {}
+    metaSortKey: -1763663918663
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_35a1ce9678654686838ccabdf81c59d6
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763664172847
+    created: 1763663586504
+    name: Rotas Protegidas
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1763663586504
+    _type: request_group
+  - _id: req_90010a3adeed4708ab95763fdc8e9898
+    parentId: fld_d191d97f46c34713a6490a3ce1a1cc0d
+    modified: 1763671893802
+    created: 1763663880064
+    url: "{{ base_url }}/api/users/{{usuario_id}}"
+    name: Excluir Usuário por ID
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+        id: pair_3073e51bd19c48c98205059342662ba4
+      - id: pair_279d5b44ff204fb69333acd5dcba4bb9
+        name: Authorization
+        value: Bearer {{token}}
+        description: ""
+    authentication: {}
+    metaSortKey: -1763663880064
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_d191d97f46c34713a6490a3ce1a1cc0d
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763664136286
+    created: 1763663580690
+    name: Usuários
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1763663580690
+    _type: request_group
+  - _id: req_14f09ab20ac64261a56137ad95d71f56
+    parentId: fld_d191d97f46c34713a6490a3ce1a1cc0d
+    modified: 1763671883986
+    created: 1763663869615
+    url: "{{ base_url }}/api/users/{{usuario_id }}"
+    name: Atualizar Usuário por ID
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "Usuário Atualizado",
+          "email": "usuario_atualizado@example.com",
+          "password": "novaSenha123"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+        id: pair_082370112baf49638a5e59b1ead48714
+      - id: pair_20a960c75fb54905a0f24dd52a7562d9
+        name: Authorization
+        value: Bearer {{token}}
+        description: ""
+    authentication: {}
+    metaSortKey: -1763663869615
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_b1377b0f56804c0cade0ee37d7598848
+    parentId: fld_d191d97f46c34713a6490a3ce1a1cc0d
+    modified: 1763664585113
+    created: 1763663857368
+    url: "{{ base_url }}/api/users"
+    name: Listar Todos os Usuários
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+        id: pair_8911a05a47a44a6884452f2cbb3c55cd
+      - id: pair_712aae5877e54d7e93592c71f6089ab6
+        name: Authorization
+        value: Bearer {{token}}
+        description: ""
+    authentication: {}
+    metaSortKey: -1763663857368
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_3d1374252cd24c43976fdef9e8ac26df
+    parentId: fld_f1e8911b5ae6490b82d51622977bf605
+    modified: 1763669651602
+    created: 1763663614151
+    url: "{{ base_url }}/api/register"
+    name: Registrar Usuário
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Nathalia Teste",
+          "email": "nathalia@example.com",
+          "password": "senha123"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763663614151
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_f1e8911b5ae6490b82d51622977bf605
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763664092340
+    created: 1763663573831
+    name: Autenticação
+    description: ""
+    environment: {}
+    environmentPropertyOrder: null
+    metaSortKey: -1763663573831
+    _type: request_group
+  - _id: req_07699ac428a04bea94eb4ebaeea232cc
+    parentId: fld_f1e8911b5ae6490b82d51622977bf605
+    modified: 1763669710901
+    created: 1763663605863
+    url: "{{ base_url }}/api/login"
+    name: Login de Usuário
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "email": "nathalia@example.com",
+          "password": "senha123"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1763663605863
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_b59f64c4e093e99a98a5df0d975d1d7f473e410f
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763675356999
+    created: 1763663422611
+    name: Base Environment
+    data:
+      base_url: http://localhost:3000
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJuYXRoYWxpYUBleGFtcGxlLmNvbSIsImlhdCI6MTc2MzY2OTcxMywiZXhwIjoxNzYzNjczMzEzfQ.OPxWca3P8lK6EZkAakpIvJ0HaB4wL3_MRfxUzK8hnDg
+      usuario_id: 2
+      medico_id: 1
+      paciente_id: 1
+      consulta_id: 4
+    dataPropertyOrder:
+      "&":
+        - base_url
+        - token
+        - usuario_id
+        - medico_id
+        - paciente_id
+        - consulta_id
+    color: null
+    isPrivate: false
+    metaSortKey: 1763663422612
+    _type: environment
+  - _id: jar_b59f64c4e093e99a98a5df0d975d1d7f473e410f
+    parentId: wrk_b3d6cd2ae2034aa9833aeac768b17aa8
+    modified: 1763663422614
+    created: 1763663422614
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
