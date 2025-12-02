@@ -1,3 +1,5 @@
+import app from "../server.js";
+
 export default function handler(req, res) {
-  res.status(200).send("✅ API está rodando com sucesso!");
+  return app(req, res);
 }
