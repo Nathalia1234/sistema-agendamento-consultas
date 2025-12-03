@@ -26,8 +26,8 @@ const app = express();
 // -----------------------------
 app.use(cors({
   origin: [
-    "http://localhost:8080", // localhost frontend
-   "https://sistema-agendamento-consultas-eight.vercel.app" // frontend deployado
+    "http://localhost:8080",
+   "https://sistema-agendamento-consultas-fo6l.vercel.app" // frontend deployado
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
