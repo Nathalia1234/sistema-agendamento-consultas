@@ -2,52 +2,67 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+
 import swaggerUi from "swagger-ui-express";
-
 import { swaggerDocs } from "./swagger.config.js";
-import { connectDatabase } from "./database/connection.js";
 
+import { connectDatabase } from "./database/connection.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import consultaRoutes from "./routes/consultaRoutes.js";
 
+// -----------------------------
+// Carrega as variáveis de ambiente (.env)
+// -----------------------------
 dotenv.config();
 
+// -----------------------------
+// Inicializa o app Express
+// -----------------------------
 const app = express();
 
-// CORS
-const allowedOrigins = [
-    "https://sistema-agendamento-consultas-fo6l.vercel.app", // frontend deployado
-    "http://localhost:8080"
-];
+// -----------------------------
+// Middlewares globais
+// -----------------------------
+app.use(cors({
+  origin: [
+    "http://localhost:8080", // localhost frontend
+   "https://sistema-agendamento-consultas-eight.vercel.app" // frontend deployado
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
 
-// Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// -----------------------------
+// Body parser
+// -----------------------------
 app.use(express.json());
 
-// DB
+// -----------------------------
+// Conecta ao Neon
+// -----------------------------
 connectDatabase();
-swaggerDocs(app);
 
-// Rotas
+// -----------------------------
+// Inicializar o Swagger
+// -----------------------------
+swaggerDocs(app);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+
+// -----------------------------
+// Rotas principais
+// -----------------------------
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/consultas", consultaRoutes);
 
+// -----------------------------
+// Rota base — para teste local e vercel
+// -----------------------------
 app.get("/", (req, res) => {
-  res.json({
-    status: "online",
-    message: "API funcionando!"
-  });
+  res.send("✅ API está rodando com sucesso!");
 });
 
 // 404
@@ -61,15 +76,17 @@ app.use((req, res) => {
 // -----------------------------
 // AMBIENTE LOCAL → app.listen()
 // AMBIENTE VERCEL → NÃO roda servidor
+
+
+// -----------------------------
+// Porta de execução
 // -----------------------------
 const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Servidor rodando na porta ${PORT}`);
+});
 
-if (!process.env.VERCEL) {
-  // Executando localmente
-  app.listen(PORT, () => {
-    console.log(`🔥 Servidor local rodando na porta ${PORT}`);
-  });
-}
-
-// Exporta o app para a Vercel
+// -----------------------------
+// Export do app — necessário pro Vercel
+// -----------------------------
 export default app;
