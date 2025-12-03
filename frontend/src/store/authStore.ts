@@ -8,6 +8,8 @@ interface User {
 }
 
 interface AuthState {
+  setUser: any;
+  isAuthenticated: any;
   user: User | null;
   token: string | null;
   loading: boolean;
@@ -16,46 +18,31 @@ interface AuthState {
   loadStoredAuth: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
+  isAuthenticated: null,
   user: null,
   token: null,
   loading: false,
-
-  loadStoredAuth: () => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-
-    if (token && userData) {
-      set({ token, user: JSON.parse(userData) });
-    }
-  },
-
-  login: async (email, senha) => {
+  setUser: (user: User | null) => set({ user }),
+  login: async (email: string, senha: string) => {
+    set({ loading: true });
     try {
-      set({ loading: true });
-
-      const response = await api.post('/auth/login', { email, senha });
-
-      const { token, user } = response.data;
-
-      // Salva token e usuario REAL
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-
-      set({ token, user, loading: false });
-
+      const response = await api.post('/login', { email, senha });
+      set({ isAuthenticated: true, user: response.data.user, token: response.data.token, loading: false });
       return true;
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
       set({ loading: false });
       return false;
     }
   },
-
   logout: () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-
-    set({ token: null, user: null });
+    set({ isAuthenticated: false, user: null, token: null });
+  },
+  loadStoredAuth: () => {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    if (token && user) {
+      set({ isAuthenticated: true, token, user: JSON.parse(user) });
+    }
   },
 }));
