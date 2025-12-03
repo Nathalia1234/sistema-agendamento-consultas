@@ -16,14 +16,19 @@ dotenv.config();
 const app = express();
 
 // CORS
-app.use(cors({
-  origin: [
-    "https://sistema-agendamento-consultas-fo6l.vercel.app",
+const allowedOrigins = [
+    "https://sistema-agendamento-consultas-fo6l.vercel.app", // frontend deployado
     "http://localhost:8080"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // Swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
