@@ -1,7 +1,6 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "dev": "set NODE_NO_WARNINGS=1 && node --no-warnings --loader ts-node/esm --watch src/server.ts",
     "start": "node dist/server.js",
