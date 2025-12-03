@@ -62,8 +62,9 @@ app.use("/consultas", consultaRoutes);
 // Rota base — para teste local e vercel
 // -----------------------------
 app.get("/", (req, res) => {
-  res.send("✅ API está rodando com sucesso!");
+  res.status(200).json({ message: "✅ API do Sistema de Agendamento de Consultas está online!"});
 });
+
 
 // 404
 app.use((req, res) => {
@@ -82,8 +83,10 @@ app.use((req, res) => {
 // Porta de execução
 // -----------------------------
 const PORT = process.env.PORT || 3000;
+
+
 app.listen(PORT, () => {
-  console.log(`✅ Servidor rodando na porta ${PORT}`);
+  console.log(`✅ Servidor rodando localmente na porta ${PORT}`);
 });
 
 // -----------------------------
