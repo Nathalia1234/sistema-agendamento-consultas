@@ -17,7 +17,10 @@ const app = express();
 
 // CORS
 app.use(cors({
-  origin: ["http://localhost:8080"],
+  origin: [
+    "https://sistema-agendamento-consultas-fo6l-dih6ikawu.vercel.app",
+    "http://localhost:8080"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
