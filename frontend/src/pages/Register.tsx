@@ -29,11 +29,12 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await api.post('/auth/register', {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
+  await api.post('/auth/register', {
+  nome: formData.name,
+  email: formData.email,
+  senha: formData.password,
+});
+
       
       toast.success('Cadastro realizado com sucesso!');
       navigate('/login');
