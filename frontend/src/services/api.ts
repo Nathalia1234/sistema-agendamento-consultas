@@ -1,13 +1,7 @@
 import axios from 'axios';
 
-// const BASE_URL = 'https://sistema-agendamento-consultas-phi.vercel.app';
-const BASE_URL = 'http://localhost:3000';
-
 export const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 // Adiciona token automaticamente antes de cada requisição

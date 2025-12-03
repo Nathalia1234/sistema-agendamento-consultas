@@ -70,7 +70,7 @@ const Index = () => {
           </h1>
           
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Plataforma completa para agendamento e gestão de consultas médicas.
+            Plataforma para agendamento e gestão de consultas médicas.
             Simples, seguro e eficiente.
           </p>
 
@@ -122,7 +122,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t mt-20">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>© 2024 MediCare. Sistema de Agendamento de Consultas Médicas.</p>
+          <p>© 2025 MediCare. Sistema de Agendamento de Consultas Médicas.</p>
         </div>
       </footer>
     </div>
