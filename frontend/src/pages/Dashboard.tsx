@@ -9,10 +9,11 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { parse } from 'date-fns';
 
 interface Consulta {
   id: string;
-  data: string;
+  data_consulta: string;
   descricao: string;
 }
 
@@ -44,16 +45,17 @@ const Dashboard = () => {
   }, [fetchConsultas]);
 
   // =============================
-  // 📌 Lógica correta da próxima consulta
+  //  Lógica correta da próxima consulta
   // =============================
   const proximasConsultas = consultas
-    .filter((c) => new Date(c.data).getTime() >= new Date().getTime())
-    .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
+  .filter((c) => new Date(c.data_consulta) >= new Date())
+  .sort((a, b) => new Date(a.data_consulta).getTime() - new Date(b.data_consulta).getTime());
 
-  const proximaConsulta = proximasConsultas.length > 0 ? proximasConsultas[0] : null;
+const proximaConsulta = proximasConsultas[0] || null;
+
 
   // =============================
-  // 📌 Cards do topo ajustados
+  //  Cards do topo ajustados
   // =============================
   const stats = [
     {
@@ -63,13 +65,13 @@ const Dashboard = () => {
       color: 'bg-primary',
     },
     {
-      title: 'Próxima Consulta',
-      value: proximaConsulta
-        ? format(new Date(proximaConsulta.data), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
-        : 'Nenhuma',
-      icon: Clock,
-      color: 'bg-accent',
-    },
+  title: "Próxima Consulta",
+  value: proximaConsulta
+    ? format(new Date(proximaConsulta.data_consulta), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
+    : "Nenhuma",
+  icon: Clock,
+  color: "bg-accent",
+},
   ];
 
   return (
@@ -136,7 +138,7 @@ const Dashboard = () => {
                       <div>
                         <p className="font-semibold">Consulta</p>
                         <p className="text-sm text-muted-foreground">
-                          {format(new Date(consulta.data), "dd 'de' MMMM 'às' HH:mm", {
+                          {format(new Date(consulta.data_consulta), "dd 'de' MMMM 'às' HH:mm", {
                             locale: ptBR,
                           })}
                         </p>
