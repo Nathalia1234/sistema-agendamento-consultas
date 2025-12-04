@@ -21,7 +21,7 @@ const options = {
                 description: "Servidor local",
             },
             {
-                url: "https://sistema-agendamento-consultas-eight.vercel.app",
+                url: "https://sistema-agendamento-consultas-three.vercel.app",
                 description: "Servidor em produção (Vercel)",
             },
         ],
