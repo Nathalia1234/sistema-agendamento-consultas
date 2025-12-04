@@ -89,7 +89,9 @@ const PORT = process.env.PORT || 3000;
 
 
 app.listen(PORT, () => {
-  console.log(`✅ Servidor rodando localmente na porta ${PORT}`);
+  console.log(`✅ Servidor HTTP iniciado na porta ${PORT}`);
+  console.log(`✅ Ambiente de Execução: ${process.env.NODE_ENV || 'desenvolvimento'}`);
+  console.log(`✅ Swagger Docs disponível em: http://localhost:${PORT}/api-docs`);
 });
 
 // -----------------------------
