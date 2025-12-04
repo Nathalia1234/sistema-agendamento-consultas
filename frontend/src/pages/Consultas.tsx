@@ -49,6 +49,8 @@ const Consultas = () => {
     <div className="p-8">
       <h1 className="text-2xl font-semibold mb-4">Consultas</h1>
 
+      {/* Container dos botões */}
+      <div className="flex gap-3 mb-4">
       <button
         className="px-4 py-2 bg-blue-600 text-white rounded mb-4"
         onClick={() => navigate("/consultas/nova")}
@@ -58,10 +60,11 @@ const Consultas = () => {
 
         <button
     onClick={() => navigate("/dashboard")}
-    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded transition"
+    className="px-4 py-2 bg-blue-600 text-white rounded mb-4"
   >
     Voltar
       </button>
+      </div>
       
       <div className="bg-white shadow rounded p-4">
         {consultas.length === 0 ? (
