@@ -26,14 +26,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        {/* Define application routes */}
+        {/* Define aplicação de rotas */}
         <Routes>
-          {/* Public Routes */}
+          {/* Rotas Públicas */}
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Register />} />
 
-          {/* Protected Routes */}
+          {/* Rotas Protegidas */}
           <Route
             path="/dashboard"
             element={
@@ -43,7 +43,7 @@ const App = () => (
             }
           />
 
-          {/* Consultas Routes */}
+          {/* Rota de Consultas */}
           <Route
             path="/consultas"
             element={
@@ -53,7 +53,7 @@ const App = () => (
             }
           />
 
-            {/* New Consulta Route */}
+            {/* Rota para criação de consulta */}
           <Route
             path="/consultas/nova"
             element={
@@ -63,7 +63,7 @@ const App = () => (
             }
           />
 
-          {/* Edit Consulta Route */}
+          {/* Rota para edição de consulta */}
           <Route
             path="/consultas/editar/:id"
             element={
@@ -73,7 +73,7 @@ const App = () => (
             }
           />
 
-          {/* Perfil Route */}
+          {/* Rota para o perfil */}
           <Route
             path="/perfil"
             element={
@@ -83,7 +83,7 @@ const App = () => (
             }
           />
           
-          {/* Not Found Route */}
+          {/* Rota para página não encontrada */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
