@@ -30,9 +30,14 @@ const Dashboard = () => {
     try {
       const response = await api.get('/consultas');
       setConsultas(response.data);
-    } catch (error) {
-      toast.error('Erro ao carregar consultas');
-    } finally {
+    } catch (error: any) {
+    if (error.response?.status === 401) {
+        toast.error("Sessão expirada, faça login novamente");
+        navigate("/login");
+        return;
+    }
+    toast.error("Erro ao carregar consultas");
+} finally {
       setLoading(false);
     }
   };

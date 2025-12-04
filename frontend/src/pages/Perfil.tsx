@@ -16,23 +16,35 @@ interface UserProfile {
 const Perfil = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const setUser = useAuthStore((state) => state.setUser);
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
+// Pega apenas o user atual da store (sem setUser)
+const user = useAuthStore((state) => state.user);
+
 
   const fetchProfile = async () => {
     try {
-      const response = await api.get('/users/me');
-      setProfile(response.data);
-      setUser(response.data);
-    } catch (error) {
-      toast.error('Erro ao carregar perfil');
+      const response = await api.get("/users/me");
+
+      // Ajuste porque o backend usa "nome"
+      const profileData: UserProfile = {
+        id: response.data.id,
+        name: response.data.nome,
+        email: response.data.email,
+        createdAt: response.data.createdAt
+      };
+
+      setProfile(profileData);
+
+    } catch (error: any) {
+      toast.error("Erro ao carregar perfil");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   if (loading) {
     return (

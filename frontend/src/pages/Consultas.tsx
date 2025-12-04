@@ -50,9 +50,14 @@ const Consultas = () => {
     try {
       const response = await api.get('/consultas');
       setConsultas(response.data);
-    } catch (error) {
-      toast.error('Erro ao carregar consultas');
-    } finally {
+    } catch (error: any) {
+    if (error.response?.status === 401) {
+        toast.error("Sessão expirada, faça login novamente");
+        navigate("/login");
+        return;
+    }
+    toast.error("Erro ao carregar consultas");
+} finally {
       setLoading(false);
     }
   };
@@ -64,9 +69,14 @@ const Consultas = () => {
       await api.delete(`/consultas/${deleteId}`);
       toast.success('Consulta excluída com sucesso!');
       fetchConsultas();
-    } catch (error) {
-      toast.error('Erro ao excluir consulta');
-    } finally {
+    } catch (error: any) {
+    if (error.response?.status === 401) {
+        toast.error("Sessão expirada, faça login novamente");
+        navigate("/login");
+        return;
+    }
+    toast.error("Erro ao carregar consultas");
+} finally {
       setDeleteId(null);
     }
   };
@@ -78,9 +88,14 @@ const Consultas = () => {
       await api.put(`/consultas/cancel/${cancelId}`);
       toast.success('Consulta cancelada com sucesso!');
       fetchConsultas();
-    } catch (error) {
-      toast.error('Erro ao cancelar consulta');
-    } finally {
+    } catch (error: any) {
+    if (error.response?.status === 401) {
+        toast.error("Sessão expirada, faça login novamente");
+        navigate("/login");
+        return;
+    }
+    toast.error("Erro ao carregar consultas");
+} finally {
       setCancelId(null);
     }
   };

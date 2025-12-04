@@ -12,29 +12,40 @@ import api from '@/services/api';
 const Login = () => {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
+
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     senha: '',
   });
 
+const handleChange = (e) => {
+    setFormData({ 
+      ...formData, 
+      [e.target.name]: e.target.value 
+    });
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const response = await api.post('/auth/login', formData);
-      const { token, user } = response.data;
-      
-      login(token, user);
-      toast.success('Login realizado com sucesso!');
-      navigate('/dashboard');
-    } catch (error: any) {
-      const backendError =   error.response?.data?.error ||   error.response?.data?.message ||   'Erro ao fazer login';
-      toast.error(backendError);
-    } finally {
-      setLoading(false);
+    const { email, senha } = formData;
+
+    if (!email || !senha) {
+      toast.error("Preencha todos os campos!");
+      return;
     }
+
+    const success = await login(email, senha);
+
+    if (success) {
+      toast.success("Login realizado com sucesso!");
+      navigate("/dashboard");
+    } else {
+      toast.error("Credenciais inválidas ou erro ao realizar login.");
+    }
+    setLoading(false);
   };
 
   return (

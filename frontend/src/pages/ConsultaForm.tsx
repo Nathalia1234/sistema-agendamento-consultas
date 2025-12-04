@@ -63,9 +63,13 @@ const ConsultaForm = () => {
 
       navigate('/consultas');
     } catch (error: any) {
-      const message = error.response?.data?.message || 'Erro ao salvar consulta';
-      toast.error(message);
-    } finally {
+    if (error.response?.status === 401) {
+        toast.error("Sessão expirada, faça login novamente");
+        navigate("/login");
+        return;
+    }
+    toast.error(error.response?.data?.message || "Erro ao salvar consulta");
+} finally {
       setLoading(false);
     }
   };
