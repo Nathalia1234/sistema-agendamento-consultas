@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
+
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -15,6 +16,7 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -25,6 +27,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Register />} />
+
           <Route
             path="/dashboard"
             element={
@@ -33,6 +36,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/consultas"
             element={
@@ -41,6 +45,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/consultas/nova"
             element={
@@ -49,6 +54,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/consultas/editar/:id"
             element={
@@ -57,6 +63,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/perfil"
             element={
@@ -65,6 +72,7 @@ const App = () => (
               </ProtectedRoute>
             }
           />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

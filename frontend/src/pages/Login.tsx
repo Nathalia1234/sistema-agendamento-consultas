@@ -19,29 +19,32 @@ const Login = () => {
     senha: '',
   });
 
-const handleChange = (e) => {
-    setFormData({ 
-      ...formData, 
-      [e.target.name]: e.target.value 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const { email, senha } = formData;
-
-    if (!email || !senha) {
+    if (!formData.email || !formData.senha) {
       toast.error("Preencha todos os campos!");
+      setLoading(false);
       return;
     }
 
-    const success = await login(email, senha);
+    const success = await login(formData.email, formData.senha);
 
     if (success) {
       toast.success("Login realizado com sucesso!");
-      navigate("/dashboard");
+
+      // Aguarda o Zustand atualizar completamente
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 150);
     } else {
       toast.error("Credenciais inválidas ou erro ao realizar login.");
     }
