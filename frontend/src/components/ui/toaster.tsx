@@ -19,7 +19,7 @@ export function Toaster() {
         );
       })}
       {/* Posiciona os toasts no topo-right */}
-      <ToastViewport className="fixed top-4 right-4 z-[9999]" />
+      <ToastViewport />
     </ToastProvider>
   );
 }
