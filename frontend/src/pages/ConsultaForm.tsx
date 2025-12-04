@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback  } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Loader2, Calendar as CalendarIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,73 +13,52 @@ import { toast } from 'sonner';
 const ConsultaForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const isEdit = !!id;
+  const isEdit = Boolean(id);
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    data_consulta: '',
-    descricao: '',
+    data_consulta: "",
+    descricao: "",
   });
 
-   useEffect(() => {
-    if (isEdit) {
-      fetchConsulta();
+  const fetchConsulta = useCallback(async () => {
+    try {
+      const response = await api.get(`/consultas/${id}`);
+      const consulta = response.data;
+
+      setFormData({
+        data_consulta: new Date(consulta.data_consulta).toISOString().slice(0, 16),
+        descricao: consulta.descricao,
+      });
+    } catch (error) {
+      toast.error("Erro ao carregar consulta");
     }
   }, [id]);
 
-  const fetchConsulta = async () => {
-    try {
-      const response = await api.get(`/consultas/${id}`);
-      const consulta = response.data.consulta ?? response.data;
-
-      setFormData({
-        data_consulta: new Date(consulta.data_consulta)
-          .toISOString()
-          .slice(0, 16), // datetime-local format
-        descricao: consulta.descricao || '',
-      });
-    } catch (error) {
-      toast.error('Erro ao carregar consulta');
-      navigate('/consultas');
+  useEffect(() => {
+    if (isEdit) {
+      fetchConsulta();
     }
-  };
+  }, [isEdit, fetchConsulta]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
 
-    try {
-        const payload = {
-            data_consulta: new Date(formData.data_consulta).toISOString(),
-            descricao: formData.descricao.trim(),
-        };
+  try {
+    const dataFormatada = new Date(formData.data_consulta).toISOString();
 
+    await api.post("/consultas", {
+      data: dataFormatada,
+      descricao: formData.descricao,
+    });
 
-      if (isEdit) {
-        await api.put(`/consultas/${id}`, payload);
-        toast.success('Consulta atualizada com sucesso!');
-      } else {
-        await api.post('/consultas', payload);
-        toast.success('Consulta criada com sucesso!');
-      }
+    toast.success("Consulta criada com sucesso!");
+    navigate("/consultas");
+  } catch (error) {
+    toast.error("Erro ao criar consulta");
+  }
+};
 
-      navigate('/consultas');
-    } catch (error: any) {
-      if (error.response?.status === 401) {
-        toast.error('Sessão expirada, faça login novamente');
-        navigate('/login');
-        return;
-      }
-
-      toast.error(
-        error.response?.data?.error ||
-          error.response?.data?.message ||
-          'Erro ao salvar consulta'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <DashboardLayout>

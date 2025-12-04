@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import { getConsultas, updateConsulta } from "@/services/api";
+import api from "../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+
+interface Consulta {
+  id: number;
+  data: string;
+  descricao: string;
+}
 
 const EditarConsulta = () => {
   const { id } = useParams();
@@ -13,14 +19,20 @@ const EditarConsulta = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await getConsultas();
-        const consulta = res.data.find((c: any) => c.id === Number(id));
+        const res = await api.get<Consulta[]>("/consultas");
 
-        if (!consulta) return toast.error("Consulta não encontrada");
+        const consulta = res.data.find((c) => c.id === Number(id));
+        if (!consulta) {
+          toast.error("Consulta não encontrada");
+          return;
+        }
 
-        setDataConsulta(new Date(consulta.data_consulta).toISOString().slice(0, 16));
+        // Ajusta para o formato aceito pelo datetime-local
+        const dataISO = new Date(consulta.data).toISOString().slice(0, 16);
+
+        setDataConsulta(dataISO);
         setDescricao(consulta.descricao);
-      } catch {
+      } catch (error) {
         toast.error("Erro ao carregar consulta");
       }
     };
@@ -28,18 +40,20 @@ const EditarConsulta = () => {
     load();
   }, [id]);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      await updateConsulta(Number(id), {
-        data_consulta: new Date(dataConsulta).toISOString(),
-        descricao: descricao.trim(),
+      const dataISO = new Date(dataConsulta).toISOString();
+
+      await api.put(`/consultas/${id}`, {
+        data: dataISO,
+        descricao,
       });
 
-      toast.success("Consulta atualizada!");
+      toast.success("Consulta atualizada com sucesso!");
       navigate("/consultas");
-    } catch {
+    } catch (error) {
       toast.error("Erro ao atualizar consulta");
     }
   };
