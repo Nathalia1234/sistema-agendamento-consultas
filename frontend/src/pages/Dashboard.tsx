@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Calendar, Clock, CheckCircle, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '@/components/DashboardLayout';
 import api from '@/services/api';
+import axios from 'axios';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -14,7 +15,6 @@ interface Consulta {
   paciente: string;
   data: string;
   descricao: string;
-  status?: string;
 }
 
 const Dashboard = () => {
@@ -22,30 +22,35 @@ const Dashboard = () => {
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchConsultas();
-  }, []);
-
-  const fetchConsultas = async () => {
+  const fetchConsultas = useCallback(async () => {
     try {
       const response = await api.get('/consultas');
       setConsultas(response.data);
-    } catch (error: any) {
-    if (error.response?.status === 401) {
-        toast.error("Sessão expirada, faça login novamente");
-        navigate("/login");
-        return;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          toast.error("Sessão expirada, faça login novamente");
+          navigate("/login");
+          return;
     }
-    toast.error("Erro ao carregar consultas");
+  }
+
+  toast.error("Erro ao carregar consultas");
 } finally {
       setLoading(false);
     }
-  };
+  }, [navigate]);
 
+  useEffect(() => {
+    fetchConsultas();
+  }, [fetchConsultas]);
+
+  // Ordena consultas futuras
   const proximasConsultas = consultas
     .filter((c) => new Date(c.data) >= new Date())
-    .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime())
-    .slice(0, 3);
+    .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
+
+  const proximaConsulta = proximasConsultas[0] || null;
 
   const stats = [
     {
@@ -55,22 +60,10 @@ const Dashboard = () => {
       color: 'bg-primary',
     },
     {
-      title: 'Próximas Consultas',
-      value: proximasConsultas.length,
+      title: 'Próxima Consulta',
+      value: proximaConsulta ? format(new Date(proximaConsulta.data), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR }) : 'Nenhuma',
       icon: Clock,
       color: 'bg-accent',
-    },
-    {
-      title: 'Concluídas',
-      value: consultas.filter((c) => c.status === 'concluida').length,
-      icon: CheckCircle,
-      color: 'bg-success-green',
-    },
-    {
-      title: 'Pendentes',
-      value: consultas.filter((c) => c.status === 'pendente' || !c.status).length,
-      icon: AlertCircle,
-      color: 'bg-warning-amber',
     },
   ];
 
@@ -84,7 +77,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Stats Cards */}
+        {/* Status dos 2 cards*/}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat) => (
             <Card key={stat.title} className="border-2 hover:shadow-lg transition-smooth">
