@@ -19,9 +19,16 @@ interface Consulta {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [consultaSelecionada, setConsultaSelecionada] = useState<Consulta | null>(null);
+  const [modalAberto, setModalAberto] = useState(false);
+
+  // =============================
+  //  Busca as consultas no backend
+  // =============================
   const fetchConsultas = useCallback(async () => {
     try {
       const response = await api.get('/consultas');
@@ -45,17 +52,20 @@ const Dashboard = () => {
   }, [fetchConsultas]);
 
   // =============================
-  //  Lógica correta da próxima consulta
+  //  Próxima consulta
   // =============================
   const proximasConsultas = consultas
-  .filter((c) => new Date(c.data_consulta) >= new Date())
-  .sort((a, b) => new Date(a.data_consulta).getTime() - new Date(b.data_consulta).getTime());
+    .filter((c) => new Date(c.data_consulta) >= new Date())
+    .sort(
+      (a, b) =>
+        new Date(a.data_consulta).getTime() -
+        new Date(b.data_consulta).getTime()
+    );
 
-const proximaConsulta = proximasConsultas[0] || null;
-
+  const proximaConsulta = proximasConsultas[0] || null;
 
   // =============================
-  //  Cards do topo ajustados
+  //  Cards do topo
   // =============================
   const stats = [
     {
@@ -65,17 +75,66 @@ const proximaConsulta = proximasConsultas[0] || null;
       color: 'bg-primary',
     },
     {
-  title: "Próxima Consulta",
-  value: proximaConsulta
-    ? format(new Date(proximaConsulta.data_consulta), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
-    : "Nenhuma",
-  icon: Clock,
-  color: "bg-accent",
-},
+      title: "Próxima Consulta",
+      value: proximaConsulta
+        ? format(new Date(proximaConsulta.data_consulta), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
+        : "Nenhuma",
+      icon: Clock,
+      color: "bg-accent",
+    },
   ];
 
+  // =============================
+  // Modal de Detalhes
+  // =============================
+  const ModalDetalhes = () => {
+    if (!modalAberto || !consultaSelecionada) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+
+          <h2 className="text-xl font-bold mb-4 text-center">
+            Detalhes da Consulta
+          </h2>
+
+          <div className="space-y-2">
+            <p>
+              <strong>ID:</strong> {consultaSelecionada.id}
+            </p>
+
+            <p>
+              <strong>Data:</strong>{" "}
+              {format(
+                new Date(consultaSelecionada.data_consulta),
+                "dd/MM/yyyy 'às' HH:mm",
+                { locale: ptBR }
+              )}
+            </p>
+
+            <p>
+              <strong>Descrição:</strong>{" "}
+              {consultaSelecionada.descricao || "Sem descrição"}
+            </p>
+          </div>
+
+          <div className="flex justify-end mt-6 gap-2">
+            <Button variant="outline" onClick={() => setModalAberto(false)}>
+              Fechar
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // =============================
+  // Render principal
+  // =============================
   return (
-    <DashboardLayout>
+      <>
+      <ModalDetalhes />
+      <DashboardLayout>
       <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
@@ -144,9 +203,13 @@ const proximaConsulta = proximasConsultas[0] || null;
                         </p>
                       </div>
                     </div>
+                    {/* Abrir Modal */}
                     <Button
                       variant="outline"
-                      onClick={() => navigate(`/consultas/${consulta.id}`)}
+                      onClick={() => {
+    setConsultaSelecionada(consulta);
+    setModalAberto(true);
+  }}
                     >
                       Ver Detalhes
                     </Button>
@@ -157,7 +220,8 @@ const proximaConsulta = proximasConsultas[0] || null;
           </CardContent>
         </Card>
       </div>
-    </DashboardLayout>
+      </DashboardLayout>
+      </>
   );
 };
 
