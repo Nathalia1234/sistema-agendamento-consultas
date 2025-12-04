@@ -1,37 +1,16 @@
 import express from "express";
+import { createConsulta, getConsultas, updateConsulta, deleteConsulta } from "../controllers/consultaController";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
-import {
-  createConsulta,
-  getConsultas,
-  getConsultaById,
-  updateConsulta,
-  deleteConsulta,
-  cancelConsulta,
-} from "../controllers/consultaController.js";
-
-// Cria o roteador
 const router = express.Router();
 
-// Cancelar consulta – importante vir ANTES de "/:id"
-router.delete("/cancel/:id", cancelConsulta);
+router.post("/", authMiddleware, createConsulta);
+router.get("/", authMiddleware, getConsultas);
+router.put("/:id", authMiddleware, updateConsulta);
+router.delete("/:id", authMiddleware, deleteConsulta);
 
-// Criar nova consulta
-router.post("/", createConsulta);
-
-// Listar todas as consultas
-router.get("/", getConsultas);
-
-// Buscar consulta por ID
-router.get("/:id", getConsultaById);
-
-// Atualizar consulta
-router.put("/:id", updateConsulta);
-
-// Deletar consulta
-router.delete("/:id", deleteConsulta);
-
-// Exportar o roteador
 export default router;
+
 
 /**
  * @swagger

@@ -43,25 +43,20 @@ const Consultas = () => {
   const [cancelId, setCancelId] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchConsultas();
-  }, []);
+  fetchConsultas();
+}, []);
 
-  const fetchConsultas = async () => {
-    try {
-      const response = await api.get('/consultas');
-      setConsultas(response.data);
-    } catch (error: any) {
-    if (error.response?.status === 401) {
-        toast.error("Sessão expirada, faça login novamente");
-        navigate("/login");
-        return;
-    }
-    toast.error("Erro ao carregar consultas");
-} finally {
-      setLoading(false);
-    }
-  };
+  // Fetch Consultas
+const fetchConsultas = async () => {
+  try {
+    const response = await api.get("/consultas");
+    setConsultas(response.data);
+  } catch (error) {
+    toast.error("Erro ao carregar consultas.");
+  }
+};
 
+  // Delete Consulta
   const handleDelete = async () => {
     if (!deleteId) return;
 
@@ -81,11 +76,12 @@ const Consultas = () => {
     }
   };
 
+  // Cancel Consulta
   const handleCancel = async () => {
     if (!cancelId) return;
 
     try {
-      await api.put(`/consultas/cancel/${cancelId}`);
+      await api.put(`/consultas/${cancelId}`, { status: 'cancelled' });
       toast.success('Consulta cancelada com sucesso!');
       fetchConsultas();
     } catch (error: any) {

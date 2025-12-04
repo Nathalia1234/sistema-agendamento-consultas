@@ -17,12 +17,11 @@ const ConsultaForm = () => {
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    paciente: '',
-    data: '',
+    data_consulta: '',
     descricao: '',
   });
 
-  useEffect(() => {
+   useEffect(() => {
     if (isEdit) {
       fetchConsulta();
     }
@@ -32,10 +31,12 @@ const ConsultaForm = () => {
     try {
       const response = await api.get(`/consultas/${id}`);
       const consulta = response.data;
+
       setFormData({
-        paciente: consulta.paciente,
-        data: new Date(consulta.data).toISOString().slice(0, 16),
-        descricao: consulta.descricao,
+        data_consulta: new Date(consulta.data_consulta)
+          .toISOString()
+          .slice(0, 16), // datetime-local format
+        descricao: consulta.descricao || '',
       });
     } catch (error) {
       toast.error('Erro ao carregar consulta');
@@ -48,28 +49,33 @@ const ConsultaForm = () => {
     setLoading(true);
 
     try {
-      const data = {
-        ...formData,
-        data: new Date(formData.data).toISOString(),
+      const payload = {
+        data_consulta: new Date(formData.data_consulta).toISOString(),
+        descricao: formData.descricao,
       };
 
       if (isEdit) {
-        await api.put(`/consultas/${id}`, data);
+        await api.put(`/consultas/${id}`, payload);
         toast.success('Consulta atualizada com sucesso!');
       } else {
-        await api.post('/consultas', data);
+        await api.post('/consultas', payload);
         toast.success('Consulta criada com sucesso!');
       }
 
       navigate('/consultas');
     } catch (error: any) {
-    if (error.response?.status === 401) {
-        toast.error("Sessão expirada, faça login novamente");
-        navigate("/login");
+      if (error.response?.status === 401) {
+        toast.error('Sessão expirada, faça login novamente');
+        navigate('/login');
         return;
-    }
-    toast.error(error.response?.data?.message || "Erro ao salvar consulta");
-} finally {
+      }
+
+      toast.error(
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          'Erro ao salvar consulta'
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -95,31 +101,19 @@ const ConsultaForm = () => {
           <CardHeader>
             <CardTitle>Informações da Consulta</CardTitle>
           </CardHeader>
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="paciente">Nome do Paciente *</Label>
-                <Input
-                  id="paciente"
-                  placeholder="Digite o nome do paciente"
-                  value={formData.paciente}
-                  onChange={(e) =>
-                    setFormData({ ...formData, paciente: e.target.value })
-                  }
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="data">Data e Hora *</Label>
+                <Label htmlFor="data_consulta">Data e Hora *</Label>
                 <div className="relative">
                   <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
                   <Input
-                    id="data"
+                    id="data_consulta"
                     type="datetime-local"
-                    value={formData.data}
+                    value={formData.data_consulta}
                     onChange={(e) =>
-                      setFormData({ ...formData, data: e.target.value })
+                      setFormData({ ...formData, data_consulta: e.target.value })
                     }
                     className="pl-11"
                     required
@@ -153,6 +147,7 @@ const ConsultaForm = () => {
                     'Criar Consulta'
                   )}
                 </Button>
+                
                 <Button
                   type="button"
                   variant="outline"
