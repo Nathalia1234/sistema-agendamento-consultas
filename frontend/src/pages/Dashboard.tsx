@@ -167,7 +167,7 @@ const Dashboard = () => {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl">Próximas Consultas</CardTitle>
             <Button onClick={() => navigate('/consultas')}>
-              Ver Todas
+              Agendar Consulta
             </Button>
           </CardHeader>
           <CardContent>
