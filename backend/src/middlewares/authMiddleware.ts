@@ -1,28 +1,27 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-declare global {
-  namespace Express {
-    interface Request {
-      user?: { id: number };
-    }
-  }
+interface JWTPayload {
+  id: number;
 }
 
 export default function authMiddleware(
-  req: Request,
+  req: Request & { user?: { id: number } },
   res: Response,
   next: NextFunction
 ) {
   const token = req.headers.authorization?.split(" ")[1];
 
-  if (!token) return res.status(401).json({ error: "Token não fornecido" });
+  if (!token) {
+    return res.status(401).json({ error: "Token não fornecido" });
+  }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
-    req.user = { id: decoded.id };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
+
+    req.user = { id: decoded.id }; // adiciona o ID corretamente
     next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({ error: "Token inválido" });
   }
 }

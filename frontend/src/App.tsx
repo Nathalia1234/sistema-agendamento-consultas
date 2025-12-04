@@ -13,8 +13,11 @@ import Consultas from "./pages/Consultas";
 import ConsultaForm from "./pages/ConsultaForm";
 import Perfil from "./pages/Perfil";
 import NotFound from "./pages/NotFound";
+import { Edit } from "lucide-react";
+import EditarConsulta from "./pages/EditarConsulta";
 
 const queryClient = new QueryClient();
+
 
 
 const App = () => (
@@ -23,11 +26,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        {/* Define application routes */}
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Register />} />
 
+          {/* Protected Routes */}
           <Route
             path="/dashboard"
             element={
@@ -37,6 +43,7 @@ const App = () => (
             }
           />
 
+          {/* Consultas Routes */}
           <Route
             path="/consultas"
             element={
@@ -46,6 +53,7 @@ const App = () => (
             }
           />
 
+            {/* New Consulta Route */}
           <Route
             path="/consultas/nova"
             element={
@@ -55,15 +63,17 @@ const App = () => (
             }
           />
 
+          {/* Edit Consulta Route */}
           <Route
             path="/consultas/editar/:id"
             element={
               <ProtectedRoute>
-                <ConsultaForm />
+                <EditarConsulta />
               </ProtectedRoute>
             }
           />
 
+          {/* Perfil Route */}
           <Route
             path="/perfil"
             element={
@@ -73,6 +83,7 @@ const App = () => (
             }
           />
           
+          {/* Not Found Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

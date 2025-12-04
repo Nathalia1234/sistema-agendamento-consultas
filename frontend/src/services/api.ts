@@ -31,6 +31,22 @@ DELETE /consultas/:id
 PUT    /consultas/cancel/:id
 */
 
+// Criar consulta
+export const createConsulta = (data: any) =>
+  api.post("/consultas", data);
+
+// Listar consultas
+export const getConsultas = () =>
+  api.get("/consultas");
+
+// Atualizar consulta
+export const updateConsulta = (id: number, data: any) =>
+  api.put(`/consultas/${id}`, data);
+
+// Excluir consulta
+export const deleteConsulta = (id: number) =>
+  api.delete(`/consultas/${id}`);
+
 // Tratamento global de erros
 api.interceptors.response.use(
   (response) => response,

@@ -30,7 +30,7 @@ const ConsultaForm = () => {
   const fetchConsulta = async () => {
     try {
       const response = await api.get(`/consultas/${id}`);
-      const consulta = response.data;
+      const consulta = response.data.consulta ?? response.data;
 
       setFormData({
         data_consulta: new Date(consulta.data_consulta)
@@ -49,10 +49,11 @@ const ConsultaForm = () => {
     setLoading(true);
 
     try {
-      const payload = {
-        data_consulta: new Date(formData.data_consulta).toISOString(),
-        descricao: formData.descricao,
-      };
+        const payload = {
+            data_consulta: new Date(formData.data_consulta).toISOString(),
+            descricao: formData.descricao.trim(),
+        };
+
 
       if (isEdit) {
         await api.put(`/consultas/${id}`, payload);
