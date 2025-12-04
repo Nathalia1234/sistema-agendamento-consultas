@@ -1,11 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const authMiddleware_js_1 = require("../middlewares/authMiddleware.js");
+const authMiddleware_js_1 = __importDefault(require("../middlewares/authMiddleware.js"));
 const userController_js_1 = require("../controllers/userController.js");
 const router = (0, express_1.Router)();
 // Rota protegida para obter dados do usuário autenticado
-router.get("/me", authMiddleware_js_1.authMiddleware, userController_js_1.getUserProfile);
+router.get("/me", authMiddleware_js_1.default, userController_js_1.getUserProfile);
 exports.default = router;
 /**
  * @swagger

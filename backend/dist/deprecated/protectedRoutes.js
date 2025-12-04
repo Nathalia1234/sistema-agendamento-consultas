@@ -1,11 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const authMiddleware_js_1 = require("../middlewares/authMiddleware.js");
+const authMiddleware_js_1 = __importDefault(require("../middlewares/authMiddleware.js"));
 // Cria um roteador para rotas protegidas
 const router = (0, express_1.Router)();
 // Rota protegida que requer autenticação
-router.get("/", authMiddleware_js_1.authMiddleware, (req, res) => {
+router.get("/", authMiddleware_js_1.default, (req, res) => {
     res.status(200).json({ message: "✅ Acesso à rota protegida autorizado!" });
 });
 // Exporta o roteador para uso em outras partes da aplicação

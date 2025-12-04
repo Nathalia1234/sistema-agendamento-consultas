@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { authMiddleware } from "../middlewares/authMiddleware.js";
+import  authMiddleware  from "../middlewares/authMiddleware.js";
 
 // Cria um roteador para rotas protegidas
 const router = Router();
