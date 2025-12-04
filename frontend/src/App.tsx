@@ -16,7 +16,14 @@ import NotFound from "./pages/NotFound";
 import { Edit } from "lucide-react";
 import EditarConsulta from "./pages/EditarConsulta";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false, // Evita recarregar a tela ao mudar de aba
+      retry: 1, // Tenta conectar apenas mais 1 vez se der erro (melhora UX)
+    },
+  },
+});
 
 
 
