@@ -77,7 +77,7 @@ const Consultas = () => {
           <table className="w-full border-collapse mt-2">
             <thead>
               <tr className="border-b text-left">
-                <th className="py-2">Data</th>
+                <th className="py-2">Data e Hora</th>
                 <th className="py-2">Descrição</th>
                 <th className="py-2">Ações</th>
               </tr>

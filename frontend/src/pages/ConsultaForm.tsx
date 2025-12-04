@@ -43,19 +43,30 @@ const ConsultaForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+  setLoading(true);
 
   try {
-    const dataFormatada = new Date(formData.data_consulta).toISOString();
-
-    await api.post("/consultas", {
-      data: dataFormatada,
+    const payload = {
+      data_consulta: new Date(formData.data_consulta).toISOString(),
       descricao: formData.descricao,
-    });
+    };
 
-    toast.success("Consulta criada com sucesso!");
+    if (isEdit) {
+      // ATUALIZAÇÃO
+      await api.put(`/consultas/${id}`, payload);
+      toast.success("Consulta atualizada com sucesso!");
+    } else {
+      // CRIAÇÃO
+      await api.post("/consultas", payload);
+      toast.success("Consulta criada com sucesso!");
+    }
+
     navigate("/consultas");
+
   } catch (error) {
-    toast.error("Erro ao criar consulta");
+    toast.error("Erro ao salvar consulta");
+  } finally {
+    setLoading(false);
   }
 };
 

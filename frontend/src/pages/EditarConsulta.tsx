@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 interface Consulta {
   id: number;
-  data: string;
+  data_consulta: string;
   descricao: string;
 }
 
@@ -28,7 +28,7 @@ const EditarConsulta = () => {
         }
 
         // Ajusta para o formato aceito pelo datetime-local
-        const dataISO = new Date(consulta.data).toISOString().slice(0, 16);
+        const dataISO = new Date(consulta.data_consulta).toISOString().slice(0, 16);
 
         setDataConsulta(dataISO);
         setDescricao(consulta.descricao);
@@ -47,7 +47,7 @@ const EditarConsulta = () => {
       const dataISO = new Date(dataConsulta).toISOString();
 
       await api.put(`/consultas/${id}`, {
-        data: dataISO,
+        data_consulta: dataISO,
         descricao,
       });
 
