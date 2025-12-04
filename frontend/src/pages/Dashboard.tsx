@@ -12,7 +12,6 @@ import { ptBR } from 'date-fns/locale';
 
 interface Consulta {
   id: string;
-  paciente: string;
   data: string;
   descricao: string;
 }
@@ -32,11 +31,10 @@ const Dashboard = () => {
           toast.error("Sessão expirada, faça login novamente");
           navigate("/login");
           return;
-    }
-  }
-
-  toast.error("Erro ao carregar consultas");
-} finally {
+        }
+      }
+      toast.error("Erro ao carregar consultas");
+    } finally {
       setLoading(false);
     }
   }, [navigate]);
@@ -45,13 +43,18 @@ const Dashboard = () => {
     fetchConsultas();
   }, [fetchConsultas]);
 
-  // Ordena consultas futuras
+  // =============================
+  // 📌 Lógica correta da próxima consulta
+  // =============================
   const proximasConsultas = consultas
-    .filter((c) => new Date(c.data) >= new Date())
+    .filter((c) => new Date(c.data).getTime() >= new Date().getTime())
     .sort((a, b) => new Date(a.data).getTime() - new Date(b.data).getTime());
 
-  const proximaConsulta = proximasConsultas[0] || null;
+  const proximaConsulta = proximasConsultas.length > 0 ? proximasConsultas[0] : null;
 
+  // =============================
+  // 📌 Cards do topo ajustados
+  // =============================
   const stats = [
     {
       title: 'Total de Consultas',
@@ -61,7 +64,9 @@ const Dashboard = () => {
     },
     {
       title: 'Próxima Consulta',
-      value: proximaConsulta ? format(new Date(proximaConsulta.data), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR }) : 'Nenhuma',
+      value: proximaConsulta
+        ? format(new Date(proximaConsulta.data), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
+        : 'Nenhuma',
       icon: Clock,
       color: 'bg-accent',
     },
@@ -77,7 +82,7 @@ const Dashboard = () => {
           </p>
         </div>
 
-        {/* Status dos 2 cards*/}
+        {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat) => (
             <Card key={stat.title} className="border-2 hover:shadow-lg transition-smooth">
@@ -96,7 +101,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Próximas Consultas */}
+        {/* Lista de próximas consultas */}
         <Card className="border-2">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl">Próximas Consultas</CardTitle>
@@ -129,7 +134,7 @@ const Dashboard = () => {
                         <Calendar className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <p className="font-semibold">{consulta.paciente}</p>
+                        <p className="font-semibold">Consulta</p>
                         <p className="text-sm text-muted-foreground">
                           {format(new Date(consulta.data), "dd 'de' MMMM 'às' HH:mm", {
                             locale: ptBR,
