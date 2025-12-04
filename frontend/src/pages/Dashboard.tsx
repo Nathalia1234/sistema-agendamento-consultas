@@ -207,9 +207,9 @@ const Dashboard = () => {
                     <Button
                       variant="outline"
                       onClick={() => {
-    setConsultaSelecionada(consulta);
-    setModalAberto(true);
-  }}
+                        setConsultaSelecionada(consulta);
+                        setModalAberto(true);
+                      }}
                     >
                       Ver Detalhes
                     </Button>
