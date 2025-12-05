@@ -21,7 +21,7 @@ const options = {
                 description: "Servidor local",
             },
             {
-                url: "https://sistema-agendamento-consultas-three.vercel.app",
+                url: "https://api-medicare.nathaliaohana.dev",
                 description: "Servidor em produção (Vercel)",
             },
         ],
