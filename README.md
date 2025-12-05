@@ -30,6 +30,20 @@ O foco desta entrega foi simplificar a arquitetura para garantir a **robustez do
 
 
 ---
+##  Arquitetura do Sistema (C4 Model)
+
+Abaixo, o diagrama de contêineres que ilustra a estrutura final da solução, detalhando a comunicação entre o Frontend, Backend e os serviços de dados.
+
+![Diagrama C4 - Containers](./backend/img/Diagrama%20C4.png)
+
+**Componentes da Arquitetura:**
+1.  **Frontend (Web Application):** Desenvolvido em React + Vite, responsável pela interação com Pacientes.
+2.  **Backend (API):** API REST em Node.js que gerencia autenticação, regras de agendamento e validações.
+3.  **Database (PostgreSQL):** Banco de dados relacional hospedado no Neon para persistência segura.
+4.  **Redis Cache:** Camada de cache implementada para otimizar consultas de disponibilidade e reduzir latência.
+
+
+--- 
 
 ##  Variáveis de Ambiente (.env)
 
