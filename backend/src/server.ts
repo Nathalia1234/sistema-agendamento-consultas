@@ -27,7 +27,7 @@ const app = express();
 app.use(cors({
   origin: [
     "https://sistema-agendamento-consultas-fo6l.vercel.app", // frontend deployado
-    "https://medicare.nathaliaohana.dev/", // frontend deployado
+    "https://medicare.nathaliaohana.dev", // frontend deployado
     "http://localhost:5173",
     "http://localhost:8080" // frontend local
    
