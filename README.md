@@ -182,9 +182,9 @@ Após rodar o servidor localmente, pode ser acessado pelo link: http://localhost
 
 O backend e o frontend do projeto Sistema de Agendamento de Consultas foram implantados com sucesso na plataforma Vercel, garantindo acesso público e integração direta com o banco de dados Neon PostgreSQL.
 
-🔗 URL pública da API: [Backend](https://sistema-agendamento-consultas-two.vercel.app/) 
+🔗 URL pública da API: [Backend](https://api-medicare.nathaliaohana.dev/) 
 
-🔗 URL pública da API: [Frontend](https://sistema-agendamento-consultas-fo6l.vercel.app/) 
+🔗 URL pública da API: [Frontend](https://medicare.nathaliaohana.dev/) 
 
 Configurações do Deploy Backend:
 
